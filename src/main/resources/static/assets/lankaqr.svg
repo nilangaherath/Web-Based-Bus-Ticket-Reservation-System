@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 40" width="88" height="40">
+  <rect width="88" height="40" rx="8" fill="#8C1D40"/>
+  <rect x="0.5" y="0.5" width="87" height="39" rx="7.5" stroke="rgba(255,255,255,0.15)"/>
+  <g transform="translate(8, 8)">
+    <rect width="24" height="24" rx="4" fill="#FFC72C"/>
+    <rect x="3" y="3" width="7" height="7" fill="#8C1D40"/>
+    <rect x="4.5" y="4.5" width="4" height="4" fill="#FFC72C"/>
+    <rect x="5.5" y="5.5" width="2" height="2" fill="#8C1D40"/>
+    <rect x="14" y="3" width="7" height="7" fill="#8C1D40"/>
+    <rect x="15.5" y="4.5" width="4" height="4" fill="#FFC72C"/>
+    <rect x="16.5" y="5.5" width="2" height="2" fill="#8C1D40"/>
+    <rect x="3" y="14" width="7" height="7" fill="#8C1D40"/>
+    <rect x="4.5" y="15.5" width="4" height="4" fill="#FFC72C"/>
+    <rect x="5.5" y="16.5" width="2" height="2" fill="#8C1D40"/>
+    <rect x="12" y="12" width="3" height="3" fill="#8C1D40"/>
+    <rect x="17" y="14" width="4" height="3" fill="#8C1D40"/>
+    <rect x="14" y="18" width="3" height="3" fill="#8C1D40"/>
+    <rect x="18" y="18" width="3" height="3" fill="#8C1D40"/>
+  </g>
+  <text x="37" y="19" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, Arial, sans-serif" font-weight="900" font-size="10.5" letter-spacing="0.5">LANKA</text>
+  <text x="37" y="30" fill="#FFC72C" font-family="-apple-system, BlinkMacSystemFont, Arial, sans-serif" font-weight="900" font-size="10.5" letter-spacing="0.5">QR</text>
+</svg>

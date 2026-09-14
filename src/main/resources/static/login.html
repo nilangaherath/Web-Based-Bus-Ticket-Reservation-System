@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Sign In | LankaRide</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+	<link rel="stylesheet" href="css/srilanka-travel.css" />
+</head>
+<body class="lk-travel auth-page auth-login-page">
+	<header class="auth-header">
+		<div class="auth-header-inner">
+			<a class="auth-brand" href="index.html" aria-label="LankaRide home">
+				<span class="lr-brand-mark"><i class="bi bi-bus-front"></i></span>
+				<span>LankaRide</span>
+			</a>
+			<a class="auth-home-link" href="index.html">
+				<i class="bi bi-arrow-left"></i>
+				<span>Back to Home</span>
+			</a>
+		</div>
+	</header>
+
+	<main class="auth-layout">
+		<section class="auth-brand-panel" aria-labelledby="authBrandHeading">
+			<div class="auth-route-map" aria-hidden="true">
+				<span class="route-node node-a"></span>
+				<span class="route-node node-b"></span>
+				<span class="route-node node-c"></span>
+				<span class="route-bus"><i class="bi bi-bus-front"></i></span>
+			</div>
+			<div class="auth-brand-content">
+				<p class="lr-eyebrow">Sri Lanka online bus booking</p>
+				<h1 id="authBrandHeading">Your journey starts here</h1>
+				<p>Search routes, reserve seats and manage your bus journeys from one secure account.</p>
+				<ul class="auth-benefits" aria-label="LankaRide account benefits">
+					<li><i class="bi bi-ticket-perforated"></i><span>Access live seat availability</span></li>
+					<li><i class="bi bi-folder-check"></i><span>Keep digital tickets in one place</span></li>
+					<li><i class="bi bi-bell"></i><span>Receive booking and journey updates</span></li>
+				</ul>
+			</div>
+		</section>
+
+		<section class="auth-form-panel" aria-labelledby="loginHeading">
+			<div class="auth-card">
+				<div class="auth-card-header">
+					<h2 id="loginHeading">Welcome back</h2>
+					<p>Sign in to manage your bookings and continue your journey.</p>
+				</div>
+
+				<form class="auth-form" id="loginForm" novalidate>
+					<div id="loginValidationSummary" class="auth-alert" role="alert" aria-live="polite">
+						<i class="bi bi-exclamation-circle"></i>
+						<div>
+							<strong>We couldn't sign you in.</strong>
+							<ul id="loginValidationErrors"></ul>
+						</div>
+					</div>
+
+					<div class="auth-field">
+						<label for="loginEmail">Email address</label>
+						<div class="auth-input-wrap">
+							<i class="bi bi-envelope"></i>
+							<input class="auth-input" type="email" id="loginEmail" placeholder="name@example.com" autocomplete="email" required aria-describedby="loginEmailError" />
+						</div>
+						<span id="loginEmailError" class="auth-error"></span>
+					</div>
+
+					<div class="auth-field">
+						<label for="loginPassword">Password</label>
+						<div class="auth-input-wrap password-control">
+							<i class="bi bi-lock"></i>
+							<input class="auth-input" type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password" required aria-describedby="loginPasswordError" />
+							<button class="password-toggle" type="button" data-target="loginPassword" aria-label="Show password">
+								<i class="bi bi-eye"></i>
+							</button>
+						</div>
+						<span id="loginPasswordError" class="auth-error"></span>
+					</div>
+
+					<div class="auth-options-row">
+						<span></span>
+						<a href="#" id="toggleForgot">Forgot password?</a>
+					</div>
+
+					<button type="submit" class="auth-primary-btn" id="loginSubmitBtn">
+						<span>Sign In</span>
+					</button>
+
+					<p class="auth-switch-text">New to LankaRide? <a href="register.html">Create an account</a></p>
+					<p class="auth-footer-text">By continuing, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
+				</form>
+
+				<form class="auth-form auth-forgot-form hidden" id="forgotForm" novalidate>
+					<div class="auth-card-subheader">
+						<h3>Reset password</h3>
+						<p>Enter your email and new password to update your account.</p>
+					</div>
+					<div id="forgotValidationSummary" class="auth-alert" role="alert" aria-live="polite">
+						<i class="bi bi-exclamation-circle"></i>
+						<div>
+							<strong>Please fix the following fields.</strong>
+							<ul id="forgotValidationErrors"></ul>
+						</div>
+					</div>
+
+					<div class="auth-field">
+						<label for="forgotEmail">Email address</label>
+						<div class="auth-input-wrap">
+							<i class="bi bi-envelope"></i>
+							<input class="auth-input" type="email" id="forgotEmail" placeholder="name@example.com" autocomplete="email" aria-describedby="forgotEmailError" />
+						</div>
+						<span id="forgotEmailError" class="auth-error"></span>
+					</div>
+
+					<div class="auth-field">
+						<label for="newPassword">New password</label>
+						<div class="auth-input-wrap password-control">
+							<i class="bi bi-lock"></i>
+							<input class="auth-input" type="password" id="newPassword" placeholder="Enter a new password" autocomplete="new-password" aria-describedby="newPasswordError" />
+							<button class="password-toggle" type="button" data-target="newPassword" aria-label="Show password">
+								<i class="bi bi-eye"></i>
+							</button>
+						</div>
+						<span id="newPasswordError" class="auth-error"></span>
+					</div>
+
+					<button type="button" id="forgotBtn" class="auth-secondary-submit">
+						<span>Reset password</span>
+					</button>
+					<p class="auth-footer-text">We will update your password only if the account details match.</p>
+				</form>
+			</div>
+		</section>
+	</main>
+
+	<script>
+		const API = 'http://localhost:8080/api/users';
+
+		document.addEventListener('DOMContentLoaded', () => {
+			setupLoginValidation();
+			setupForgotValidation();
+			setupPasswordToggles();
+		});
+
+		document.getElementById('loginForm').addEventListener('submit', async (e) => {
+			e.preventDefault();
+			await login();
+		});
+
+		document.getElementById('toggleForgot').addEventListener('click', (e) => {
+			e.preventDefault();
+			document.getElementById('forgotForm').classList.toggle('hidden');
+			clearLoginValidationErrors();
+		});
+
+		document.getElementById('forgotBtn').addEventListener('click', async () => {
+			await forgot();
+		});
+
+		function setupPasswordToggles() {
+			document.querySelectorAll('.password-toggle').forEach(button => {
+				button.addEventListener('click', () => {
+					const input = document.getElementById(button.dataset.target);
+					const show = input.type === 'password';
+					input.type = show ? 'text' : 'password';
+					button.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+					button.querySelector('i').className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+				});
+			});
+		}
+
+		function validateEmail(email) {
+			const trimmed = email.trim();
+			if (!trimmed) return 'Email is required.';
+			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			if (!emailRegex.test(trimmed)) return 'Please enter a valid email address.';
+			if (trimmed.length > 100) return 'Email must be less than 100 characters.';
+			return null;
+		}
+
+		function validatePassword(password) {
+			if (!password) return 'Password is required.';
+			if (password.length < 6) return 'Password must be at least 6 characters long.';
+			return null;
+		}
+
+		function validateNewPassword(password) {
+			if (!password) return 'New password is required.';
+			if (password.length < 8) return 'Password must be at least 8 characters long.';
+			if (password.length > 100) return 'Password must be less than 100 characters.';
+			const hasUpperCase = /[A-Z]/.test(password);
+			const hasLowerCase = /[a-z]/.test(password);
+			const hasNumbers = /\d/.test(password);
+			if (!hasUpperCase || !hasLowerCase || !hasNumbers) {
+				return 'Password must contain uppercase, lowercase and number characters.';
+			}
+			return null;
+		}
+
+		function setupLoginValidation() {
+			const inputs = [
+				{ id: 'loginEmail', validator: validateEmail, errorId: 'loginEmailError' },
+				{ id: 'loginPassword', validator: validatePassword, errorId: 'loginPasswordError' }
+			];
+
+			inputs.forEach(({ id, validator, errorId }) => {
+				const input = document.getElementById(id);
+				const errorElement = document.getElementById(errorId);
+				input.addEventListener('input', () => validateField(input, validator, errorElement));
+				input.addEventListener('blur', () => validateField(input, validator, errorElement));
+			});
+		}
+
+		function setupForgotValidation() {
+			const inputs = [
+				{ id: 'forgotEmail', validator: validateEmail, errorId: 'forgotEmailError' },
+				{ id: 'newPassword', validator: validateNewPassword, errorId: 'newPasswordError' }
+			];
+
+			inputs.forEach(({ id, validator, errorId }) => {
+				const input = document.getElementById(id);
+				const errorElement = document.getElementById(errorId);
+				input.addEventListener('input', () => validateField(input, validator, errorElement));
+				input.addEventListener('blur', () => validateField(input, validator, errorElement));
+			});
+		}
+
+		function validateField(input, validator, errorElement) {
+			const error = validator(input.value);
+			input.classList.toggle('error', !!error);
+			input.classList.toggle('success', !error && !!input.value);
+			errorElement.textContent = error || '';
+		}
+
+		function validateLoginForm() {
+			const inputs = [
+				{ id: 'loginEmail', validator: validateEmail, errorId: 'loginEmailError' },
+				{ id: 'loginPassword', validator: validatePassword, errorId: 'loginPasswordError' }
+			];
+			return validateForm(inputs, 'loginValidationSummary', 'loginValidationErrors');
+		}
+
+		function validateForgotForm() {
+			const inputs = [
+				{ id: 'forgotEmail', validator: validateEmail, errorId: 'forgotEmailError' },
+				{ id: 'newPassword', validator: validateNewPassword, errorId: 'newPasswordError' }
+			];
+			return validateForm(inputs, 'forgotValidationSummary', 'forgotValidationErrors');
+		}
+
+		function validateForm(inputs, summaryId, errorsId) {
+			const errors = [];
+			let isValid = true;
+			inputs.forEach(({ id, validator, errorId }) => {
+				const input = document.getElementById(id);
+				const errorElement = document.getElementById(errorId);
+				const error = validator(input.value);
+				input.classList.toggle('error', !!error);
+				input.classList.toggle('success', !error && !!input.value);
+				errorElement.textContent = error || '';
+				if (error) {
+					errors.push(error);
+					isValid = false;
+				}
+			});
+
+			const validationSummary = document.getElementById(summaryId);
+			const validationErrors = document.getElementById(errorsId);
+			if (!isValid) {
+				validationErrors.innerHTML = errors.map(error => `<li>${error}</li>`).join('');
+				validationSummary.classList.add('show');
+			} else {
+				validationSummary.classList.remove('show');
+			}
+			return isValid;
+		}
+
+		function clearLoginValidationErrors() {
+			clearValidationState(['loginEmail', 'loginPassword'], ['loginEmailError', 'loginPasswordError'], 'loginValidationSummary');
+		}
+
+		function clearForgotValidationErrors() {
+			clearValidationState(['forgotEmail', 'newPassword'], ['forgotEmailError', 'newPasswordError'], 'forgotValidationSummary');
+		}
+
+		function clearValidationState(inputs, errorIds, summaryId) {
+			inputs.forEach((inputId, index) => {
+				const input = document.getElementById(inputId);
+				const errorElement = document.getElementById(errorIds[index]);
+				input.classList.remove('error', 'success');
+				errorElement.textContent = '';
+			});
+			document.getElementById(summaryId).classList.remove('show');
+		}
+
+		function showAuthError(summaryId, errorsId, message) {
+			const summary = document.getElementById(summaryId);
+			document.getElementById(errorsId).innerHTML = `<li>${message}</li>`;
+			summary.classList.add('show');
+			summary.classList.remove('success');
+		}
+
+		async function login() {
+			if (!validateLoginForm()) return;
+
+			const submitButton = document.getElementById('loginSubmitBtn');
+			const submitText = submitButton.querySelector('span');
+			const email = document.getElementById('loginEmail').value.trim();
+			const password = document.getElementById('loginPassword').value;
+
+			submitButton.disabled = true;
+			submitText.textContent = 'Signing in...';
+
+			try {
+				const res = await fetch(`${API}/login`, {
+					method: 'POST',
+					credentials: 'same-origin',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ email, password })
+				});
+				if (res.ok) {
+					const data = await res.json();
+					const role = (data.role || '').trim();
+					localStorage.setItem('currentUser', JSON.stringify(data));
+					const returnUrl = localStorage.getItem('returnUrl');
+					if (returnUrl) {
+						localStorage.removeItem('returnUrl');
+						window.location.href = returnUrl;
+						return;
+					}
+					switch (role) {
+						case 'IT Support':
+							window.location.href = 'itdashboard.html';
+							break;
+						case 'Customer Service':
+							window.location.href = 'customerservicedashboard.html';
+							break;
+						case 'Operation User':
+							window.location.href = 'operationdashboard.html';
+							break;
+						case 'Finance User':
+							window.location.href = 'financedashboard.html';
+							break;
+						case 'Ticket Officer':
+							window.location.href = 'ticketingdashboard.html';
+							break;
+						case 'Passenger':
+						default:
+							window.location.href = 'index.html';
+					}
+				} else {
+					showAuthError('loginValidationSummary', 'loginValidationErrors', "We couldn't sign you in. Check your email and password and try again.");
+				}
+			} catch (error) {
+				console.error('Login error:', error);
+				showAuthError('loginValidationSummary', 'loginValidationErrors', 'Network or server error. Please try again.');
+			} finally {
+				submitButton.disabled = false;
+				submitText.textContent = 'Sign In';
+			}
+		}
+
+		async function forgot() {
+			if (!validateForgotForm()) return;
+
+			const resetButton = document.getElementById('forgotBtn');
+			const resetText = resetButton.querySelector('span');
+			const email = document.getElementById('forgotEmail').value.trim();
+			const newPassword = document.getElementById('newPassword').value;
+
+			resetButton.disabled = true;
+			resetText.textContent = 'Updating...';
+
+			try {
+				const res = await fetch(`${API}/forgot`, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ email, newPassword })
+				});
+				if (res.ok) {
+					document.getElementById('forgotForm').classList.add('hidden');
+					clearForgotValidationErrors();
+					showAuthError('loginValidationSummary', 'loginValidationErrors', 'Password reset successful. You can sign in with your new password.');
+					document.getElementById('loginValidationSummary').classList.add('success');
+				} else {
+					showAuthError('forgotValidationSummary', 'forgotValidationErrors', 'We could not reset that password. Please check your details and try again.');
+				}
+			} catch (error) {
+				console.error('Forgot password error:', error);
+				showAuthError('forgotValidationSummary', 'forgotValidationErrors', 'Network or server error. Please try again.');
+			} finally {
+				resetButton.disabled = false;
+				resetText.textContent = 'Reset password';
+			}
+		}
+	</script>
+</body>
+</html>

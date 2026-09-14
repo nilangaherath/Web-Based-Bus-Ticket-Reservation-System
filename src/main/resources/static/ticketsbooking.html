@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ticket Management • Bus Reservation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/srilanka-travel.css" />
+    <style>
+        :root { 
+            --bg:#0f172a; 
+            --muted:#94a3b8; 
+            --text:#e5e7eb; 
+            --primary:#22c55e; 
+            --primary-600:#16a34a; 
+            --input:#1f2937; 
+            --ring:rgba(34,197,94,.35); 
+            --card:#111827;
+            --danger:#ef4444;
+            --danger-600:#dc2626;
+            --warning:#f59e0b;
+            --warning-600:#d97706;
+            --info:#3b82f6;
+            --info-600:#2563eb;
+        }
+        html,body{height:100%}
+        body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica Neue,Arial;color:var(--text);background:linear-gradient(0deg,#0b1220,var(--bg));}
+        .layout{display:flex;min-height:100vh}
+        .sidebar{width:240px;background:#0c1324;border-right:1px solid rgba(148,163,184,.15);padding:16px;position:sticky;top:0;height:100vh}
+        .brand{font-weight:800;margin:0 0 14px}
+        .menu{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+        .menu a{display:block;color:#e5e7eb;text-decoration:none;padding:10px 12px;border-radius:10px}
+        .menu a:hover{background:rgba(148,163,184,.12)}
+        .menu a.active{background:rgba(34,197,94,.15);color:var(--primary)}
+        .content{flex:1;padding:24px}
+        .topbar{position:sticky;top:0;z-index:5;background:rgba(12,19,36,.85);backdrop-filter:blur(8px);border-bottom:1px solid rgba(148,163,184,.15);display:flex;justify-content:space-between;align-items:center;padding:10px 16px;margin:-24px -24px 24px -24px}
+        .button{appearance:none;border:0;padding:10px 12px;border-radius:10px;background:linear-gradient(180deg,var(--primary),var(--primary-600));color:#fff;font-weight:600;cursor:pointer}
+        .button.danger{background:linear-gradient(180deg,var(--danger),var(--danger-600))}
+        .button.warning{background:linear-gradient(180deg,var(--warning),var(--warning-600))}
+        .button.info{background:linear-gradient(180deg,var(--info),var(--info-600))}
+        .button.small{padding:6px 10px;font-size:12px}
+        .h1{font-size:22px;margin:0 0 24px}
+        .card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid rgba(148,163,184,.15);border-radius:14px;padding:20px;margin-bottom:16px}
+        .input{padding:8px 10px;border-radius:6px;border:1px solid rgba(148,163,184,.25);background:var(--input);color:var(--text);outline:none}
+        .input:focus{box-shadow:0 0 0 2px var(--ring);border-color:var(--primary)}
+        .select{padding:8px 10px;border-radius:6px;border:1px solid rgba(148,163,184,.25);background:var(--input);color:var(--text);outline:none}
+        .select:focus{box-shadow:0 0 0 2px var(--ring);border-color:var(--primary)}
+        .hidden{display:none}
+        .loading{text-align:center;padding:40px;color:var(--muted)}
+        .error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5;padding:12px;border-radius:8px;margin-bottom:16px}
+        .success{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#86efac;padding:12px;border-radius:8px;margin-bottom:16px}
+        .filter-bar{display:flex;gap:12px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+        .user-box{background:rgba(255,255,255,.02);border:1px solid rgba(148,163,184,.1);border-radius:12px;padding:20px;margin-bottom:20px}
+        .user-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(148,163,184,.1)}
+        .user-name{font-size:18px;font-weight:600;color:var(--primary)}
+        .user-email{font-size:14px;color:var(--muted)}
+        .user-bookings{display:grid;gap:12px}
+        .booking-item{background:rgba(255,255,255,.02);border:1px solid rgba(148,163,184,.1);border-radius:8px;padding:12px}
+        .booking-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+        .booking-id{font-weight:600;color:var(--primary);font-size:14px}
+        .booking-status{padding:2px 6px;border-radius:4px;font-size:11px;font-weight:500}
+        .booking-status.confirmed{background:rgba(16,185,129,.2);color:#10b981}
+        .booking-details{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;color:var(--muted)}
+        .booking-route{font-weight:500;color:var(--text);font-size:13px}
+        .booking-actions{display:flex;gap:8px;margin-top:8px}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+        .form-group{margin-bottom:12px}
+        .label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+        .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:1000}
+        .modal-content{background:var(--card);border:1px solid rgba(148,163,184,.15);border-radius:12px;padding:24px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto}
+        .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+        .modal-title{font-size:18px;font-weight:600}
+        .close-btn{background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer}
+        .close-btn:hover{color:var(--text)}
+        .email-dropdown{position:relative;display:inline-block;width:100%}
+        .email-suggestions{position:absolute;top:100%;left:0;right:0;background:var(--card);border:1px solid rgba(148,163,184,.25);border-radius:6px;max-height:200px;overflow-y:auto;z-index:1001;display:none}
+        .email-suggestion{padding:8px 12px;cursor:pointer;border-bottom:1px solid rgba(148,163,184,.1)}
+        .email-suggestion:hover{background:rgba(148,163,184,.1)}
+        .email-suggestion:last-child{border-bottom:none}
+        .email-suggestion-name{font-weight:500;color:var(--text)}
+        .email-suggestion-email{font-size:12px;color:var(--muted)}
+    </style>
+</head>
+<body class="lk-travel lk-admin-page staff-page">
+    <div class="topbar staff-topbar">
+        <div class="staff-topbar-title">
+            <strong>Ticket Management</strong>
+            <span>Create bookings, update ticket counts and support passenger reservations.</span>
+        </div>
+        <div class="staff-topbar-actions">
+            <span class="staff-user-chip"><i class="bi bi-ticket-perforated"></i> Ticketing</span>
+            <a class="button secondary" href="index.html"><i class="bi bi-globe2"></i> View Website</a>
+            <button id="signout" class="button" type="button"><i class="bi bi-box-arrow-right"></i> Sign Out</button>
+        </div>
+    </div>
+    <div class="layout staff-shell">
+        <aside class="sidebar staff-sidebar">
+            <div class="staff-sidebar-brand">
+                <div class="brand-line"><i class="bi bi-bus-front"></i><span>LankaRide</span></div>
+                <small>Staff Portal</small>
+            </div>
+            <div class="staff-role-badge">Ticketing</div>
+            <ul class="menu staff-nav">
+                <li><a href="ticketingdashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                <li><a class="active" href="ticketsbooking.html"><i class="bi bi-ticket-perforated"></i> Ticket Management</a></li>
+                <li><a href="index.html"><i class="bi bi-arrow-left-circle"></i> Return to Website</a></li>
+            </ul>
+        </aside>
+        <main class="content staff-main">
+            <section class="staff-page-header">
+                <div>
+                    <div class="staff-breadcrumb">Staff Portal / Ticketing / Ticket Management</div>
+                    <h1>Ticket Management</h1>
+                    <p>Create, update, and support passenger bookings.</p>
+                </div>
+            </section>
+            <h2 class="h1">All User Bookings</h2>
+            
+            <div id="messageContainer"></div>
+            
+            <div class="card">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+                    <h3 style="margin:0">User Bookings</h3>
+                    <div style="display:flex;gap:8px">
+                        <button id="createBookingBtn" class="button small info">Create Booking</button>
+                        <button id="refreshBtn" class="button small">Refresh</button>
+                    </div>
+                </div>
+                
+                <div class="filter-bar">
+                    <input type="text" id="searchBox" class="input" placeholder="Search by user name, email, or booking ID..." style="flex:1;max-width:400px">
+                    <button id="clearSearch" class="button small warning">Clear</button>
+                </div>
+                
+                <div id="loadingIndicator" class="loading">Loading bookings...</div>
+                
+                <div id="bookingsContainer" class="hidden">
+                    <!-- Bookings will be loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Update Booking Modal -->
+    <div id="updateBookingModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Update Booking</h3>
+                <button class="close-btn" onclick="closeUpdateModal()">&times;</button>
+            </div>
+            <form id="updateBookingForm">
+                <input type="hidden" id="updateBookingId">
+                
+                <div class="form-group">
+                    <label class="label">Email (Cannot be changed)</label>
+                    <input type="email" id="updateEmail" class="input" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label class="label">Schedule (Cannot be changed)</label>
+                    <input type="text" id="updateScheduleDisplay" class="input" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label class="label">Number of Tickets</label>
+                    <input type="number" id="updateBookedTickets" class="input" min="1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="label">Total Price</label>
+                    <input type="text" id="updateTotalPrice" class="input" readonly>
+                </div>
+                
+                <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:20px">
+                    <button type="button" class="button warning" onclick="closeUpdateModal()">Cancel</button>
+                    <button type="submit" class="button">Update Tickets</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Booking Modal -->
+    <div id="createBookingModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Create New Booking</h3>
+                <button class="close-btn" onclick="closeCreateModal()">&times;</button>
+            </div>
+            <form id="createBookingForm">
+                <div class="form-group">
+                    <label class="label">Select Passenger (NIC)</label>
+                    <select id="createPassengerNic" class="select" required>
+                        <option value="">Select a passenger...</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="label">Select Schedule</label>
+                    <select id="createScheduleId" class="select" required>
+                        <option value="">Select a schedule...</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="label">Number of Tickets</label>
+                    <input type="number" id="createBookedTickets" class="input" min="1" value="1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="label">Total Price</label>
+                    <input type="text" id="createTotalPrice" class="input" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label class="label">Payment Method</label>
+                    <input type="text" id="createPaymentMethod" class="input" value="bank" readonly>
+                </div>
+                
+                <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:20px">
+                    <button type="button" class="button warning" onclick="closeCreateModal()">Cancel</button>
+                    <button type="submit" class="button">Create Booking</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Booking Modal -->
+    <div id="deleteBookingModal" class="modal hidden">
+        <div class="modal-content" style="max-width:400px">
+            <div class="modal-header">
+                <h3 class="modal-title">Delete Booking</h3>
+                <button class="close-btn" onclick="closeDeleteModal()">&times;</button>
+            </div>
+            <div style="margin-bottom:20px">
+                <p style="color:var(--muted);margin:0 0 12px">Are you sure you want to delete this booking?</p>
+                <div id="deleteBookingInfo" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:12px;font-size:14px">
+                    <!-- Booking details will be populated here -->
+                </div>
+                <p style="color:#ef4444;margin:12px 0 0;font-size:13px">⚠️ This action cannot be undone.</p>
+            </div>
+            <div style="display:flex;gap:12px;justify-content:flex-end">
+                <button type="button" class="button warning" onclick="closeDeleteModal()">Cancel</button>
+                <button type="button" class="button danger" onclick="confirmDeleteBooking()">Delete Booking</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let bookings = [];
+        let users = [];
+        let schedules = [];
+        let bookingToDelete = null;
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ensure modals are hidden on page load
+            const updateModal = document.getElementById('updateBookingModal');
+            if (updateModal) {
+                updateModal.classList.add('hidden');
+                updateModal.style.display = 'none';
+            }
+            
+            const createModal = document.getElementById('createBookingModal');
+            if (createModal) {
+                createModal.classList.add('hidden');
+                createModal.style.display = 'none';
+            }
+            
+            const deleteModal = document.getElementById('deleteBookingModal');
+            if (deleteModal) {
+                deleteModal.classList.add('hidden');
+                deleteModal.style.display = 'none';
+            }
+            
+            loadBookings();
+            loadUsers();
+            loadSchedules();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('signout').addEventListener('click', () => {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            });
+
+            document.getElementById('refreshBtn').addEventListener('click', loadBookings);
+            document.getElementById('createBookingBtn').addEventListener('click', openCreateModal);
+            
+            // Search functionality
+            document.getElementById('searchBox').addEventListener('input', filterBookings);
+            document.getElementById('clearSearch').addEventListener('click', clearSearch);
+            
+        }
+
+        async function loadBookings() {
+            try {
+                document.getElementById('loadingIndicator').classList.remove('hidden');
+                document.getElementById('bookingsContainer').classList.add('hidden');
+                
+                const response = await fetch('http://localhost:8080/api/bookings');
+                if (!response.ok) throw new Error('Failed to load bookings');
+                
+                bookings = await response.json();
+                displayBookings();
+                
+                document.getElementById('loadingIndicator').classList.add('hidden');
+                document.getElementById('bookingsContainer').classList.remove('hidden');
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+                showMessage('Error loading bookings: ' + error.message, 'error');
+                document.getElementById('loadingIndicator').classList.add('hidden');
+            }
+        }
+
+        async function loadUsers() {
+            try {
+                const response = await fetch('http://localhost:8080/api/users');
+                if (response.ok) {
+                    users = await response.json();
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        async function loadSchedules() {
+            try {
+                const response = await fetch('http://localhost:8080/api/schedules');
+                if (response.ok) {
+                    schedules = await response.json();
+                    populateScheduleSelect();
+                }
+            } catch (error) {
+                console.error('Error loading schedules:', error);
+            }
+        }
+
+        function populateScheduleSelect() {
+            const scheduleSelect = document.getElementById('scheduleId');
+            if (!scheduleSelect) {
+                return;
+            }
+            scheduleSelect.innerHTML = '<option value="">Select Schedule</option>';
+            schedules.forEach(schedule => {
+                const route = schedule.route || {};
+                const bus = schedule.bus || {};
+                scheduleSelect.innerHTML += `<option value="${schedule.scheduleId}" data-fare="${schedule.fare || 0}">
+                    ${route.fromStand || 'N/A'} → ${route.toStand || 'N/A'} | ${schedule.travelDate} | ${schedule.startTime} | Bus: ${bus.registrationNo || 'N/A'} | Rs. ${schedule.fare || 0}
+                </option>`;
+            });
+        }
+
+
+
+        function displayBookings() {
+            const container = document.getElementById('bookingsContainer');
+            container.innerHTML = '';
+
+            if (bookings.length === 0) {
+                container.innerHTML = '<div style="text-align:center;color:var(--muted);padding:40px">No bookings found</div>';
+                return;
+            }
+
+            // Group bookings by user email
+            const bookingsByUser = {};
+            bookings.forEach(booking => {
+                const email = booking.email;
+                if (!bookingsByUser[email]) {
+                    bookingsByUser[email] = [];
+                }
+                bookingsByUser[email].push(booking);
+            });
+
+            // Create user boxes
+            Object.keys(bookingsByUser).forEach(email => {
+                const userBookings = bookingsByUser[email];
+                const user = users.find(u => u.email === email);
+                
+                const userBox = document.createElement('div');
+                userBox.className = 'user-box';
+                
+                const userHeader = document.createElement('div');
+                userHeader.className = 'user-header';
+                userHeader.innerHTML = `
+                    <div>
+                        <div class="user-name">${user ? `${user.firstName} ${user.lastName}` : email}</div>
+                        <div class="user-email">${email}</div>
+                    </div>
+                    <div style="font-size:12px;color:var(--muted)">
+                        ${user ? `Phone: ${user.phone || 'N/A'} | NIC: ${user.nic || 'N/A'}` : ''}
+                    </div>
+                `;
+                
+                const bookingsContainer = document.createElement('div');
+                bookingsContainer.className = 'user-bookings';
+                
+                userBookings.forEach(booking => {
+                    const schedule = booking.schedule || {};
+                    const route = schedule.route || {};
+                    const bus = schedule.bus || {};
+                    
+                    const bookingItem = document.createElement('div');
+                    bookingItem.className = 'booking-item';
+                    bookingItem.innerHTML = `
+                        <div class="booking-header">
+                            <span class="booking-id">Booking #${booking.bookingId}</span>
+                            <span class="booking-status confirmed">Confirmed</span>
+                        </div>
+                        <div class="booking-details">
+                            <div>
+                                <div class="booking-route">${route.fromStand || 'N/A'} → ${route.toStand || 'N/A'}</div>
+                                <div>Date: ${schedule.travelDate || 'N/A'}</div>
+                                <div>Time: ${schedule.startTime || 'N/A'} - ${schedule.endTime || 'N/A'}</div>
+                            </div>
+                            <div>
+                                <div>Bus: ${bus.registrationNo || 'N/A'}</div>
+                                <div>Tickets: ${booking.bookedTickets || 1}</div>
+                                <div>Fare: Rs. ${schedule.fare || 'N/A'}</div>
+                                <div>Total: Rs. ${(schedule.fare * (booking.bookedTickets || 1)) || 'N/A'}</div>
+                            </div>
+                        </div>
+                        <div class="booking-actions">
+                            <button class="button info small" onclick="openUpdateModal(${booking.bookingId})">Update</button>
+                            <button class="button danger small" onclick="openDeleteModal(${booking.bookingId})">Delete</button>
+                        </div>
+                    `;
+                    
+                    bookingsContainer.appendChild(bookingItem);
+                });
+                
+                userBox.appendChild(userHeader);
+                userBox.appendChild(bookingsContainer);
+                container.appendChild(userBox);
+            });
+        }
+
+
+
+
+
+
+
+
+        function filterBookings() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase().trim();
+            
+            let filteredBookings = bookings;
+            
+            if (searchTerm) {
+                filteredBookings = filteredBookings.filter(booking => {
+                    const user = users.find(u => u.email === booking.email);
+                    const userName = user ? `${user.firstName} ${user.lastName}`.toLowerCase() : '';
+                    const email = booking.email.toLowerCase();
+                    const bookingId = booking.bookingId.toString();
+                    
+                    return userName.includes(searchTerm) || 
+                           email.includes(searchTerm) || 
+                           bookingId.includes(searchTerm);
+                });
+            }
+            
+            // Temporarily replace bookings array for display
+            const originalBookings = bookings;
+            bookings = filteredBookings;
+            displayBookings();
+            bookings = originalBookings;
+        }
+
+        function clearSearch() {
+            document.getElementById('searchBox').value = '';
+            displayBookings();
+        }
+
+        function showMessage(message, type) {
+            const container = document.getElementById('messageContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type === 'error' ? 'error' : type === 'warning' ? 'error' : 'success';
+            messageDiv.textContent = message;
+            
+            container.innerHTML = '';
+            container.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+
+        // Modal functions
+        function openUpdateModal(bookingId) {
+            const booking = bookings.find(b => b.bookingId === bookingId);
+            if (!booking) {
+                showMessage('Booking not found', 'error');
+                return;
+            }
+
+            const schedule = booking.schedule || {};
+            const route = schedule.route || {};
+            const bus = schedule.bus || {};
+
+            document.getElementById('updateBookingId').value = bookingId;
+            document.getElementById('updateEmail').value = booking.email;
+            document.getElementById('updateScheduleDisplay').value = 
+                `${route.fromStand || 'N/A'} → ${route.toStand || 'N/A'} | ${schedule.travelDate || 'N/A'} | ${schedule.startTime || 'N/A'} | Bus: ${bus.registrationNo || 'N/A'}`;
+            document.getElementById('updateBookedTickets').value = booking.bookedTickets;
+            
+            // Calculate and display total price
+            updateTotalPrice();
+            
+            const modal = document.getElementById('updateBookingModal');
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+        }
+
+        function closeUpdateModal() {
+            const modal = document.getElementById('updateBookingModal');
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+            document.getElementById('updateBookingForm').reset();
+        }
+
+
+        function updateTotalPrice() {
+            const bookingId = document.getElementById('updateBookingId').value;
+            const ticketCount = parseInt(document.getElementById('updateBookedTickets').value) || 0;
+            
+            if (bookingId && ticketCount > 0) {
+                const booking = bookings.find(b => b.bookingId == bookingId);
+                if (booking && booking.schedule) {
+                    const totalPrice = booking.schedule.fare * ticketCount;
+                    document.getElementById('updateTotalPrice').value = `Rs. ${totalPrice}`;
+                }
+            } else {
+                document.getElementById('updateTotalPrice').value = '';
+            }
+        }
+
+
+        async function updateBooking(bookingId, bookedTickets) {
+            try {
+                const response = await fetch(`http://localhost:8080/api/bookings/${bookingId}/tickets`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        bookedTickets: parseInt(bookedTickets)
+                    })
+                });
+
+                if (response.ok) {
+                    showMessage('Booking updated successfully', 'success');
+                    closeUpdateModal();
+                    loadBookings(); // Refresh the bookings list
+                } else {
+                    const errorData = await response.text();
+                    showMessage('Failed to update booking: ' + errorData, 'error');
+                }
+            } catch (error) {
+                console.error('Error updating booking:', error);
+                showMessage('Error updating booking: ' + error.message, 'error');
+            }
+        }
+
+        // Create booking functions
+        function openCreateModal() {
+            populatePassengerDropdown();
+            populateCreateScheduleDropdown();
+            const modal = document.getElementById('createBookingModal');
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+        }
+
+        function closeCreateModal() {
+            const modal = document.getElementById('createBookingModal');
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+            document.getElementById('createBookingForm').reset();
+            document.getElementById('createTotalPrice').value = '';
+        }
+
+        // Delete booking modal functions
+        function openDeleteModal(bookingId) {
+            const booking = bookings.find(b => b.bookingId === bookingId);
+            if (!booking) {
+                showMessage('Booking not found', 'error');
+                return;
+            }
+
+            bookingToDelete = bookingId;
+
+            const schedule = booking.schedule || {};
+            const route = schedule.route || {};
+            const bus = schedule.bus || {};
+            const user = users.find(u => u.email === booking.email);
+
+            const infoDiv = document.getElementById('deleteBookingInfo');
+            infoDiv.innerHTML = `
+                <div style="margin-bottom:8px"><strong>Booking ID:</strong> #${booking.bookingId}</div>
+                <div style="margin-bottom:8px"><strong>Passenger:</strong> ${user ? `${user.firstName} ${user.lastName}` : booking.email}</div>
+                <div style="margin-bottom:8px"><strong>Route:</strong> ${route.fromStand || 'N/A'} → ${route.toStand || 'N/A'}</div>
+                <div style="margin-bottom:8px"><strong>Date:</strong> ${schedule.travelDate || 'N/A'}</div>
+                <div style="margin-bottom:8px"><strong>Tickets:</strong> ${booking.bookedTickets || 1}</div>
+                <div><strong>Total:</strong> Rs. ${(schedule.fare * (booking.bookedTickets || 1)) || 'N/A'}</div>
+            `;
+
+            const modal = document.getElementById('deleteBookingModal');
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteBookingModal');
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+            bookingToDelete = null;
+        }
+
+        async function confirmDeleteBooking() {
+            if (!bookingToDelete) {
+                showMessage('No booking selected for deletion', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:8080/api/bookings/${bookingToDelete}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    showMessage('Booking deleted successfully', 'success');
+                    closeDeleteModal();
+                    loadBookings(); // Refresh the bookings list
+                } else {
+                    const errorData = await response.text();
+                    showMessage('Failed to delete booking: ' + errorData, 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting booking:', error);
+                showMessage('Error deleting booking: ' + error.message, 'error');
+            }
+        }
+
+        function populatePassengerDropdown() {
+            const select = document.getElementById('createPassengerNic');
+            select.innerHTML = '<option value="">Select a passenger...</option>';
+            
+            users.forEach(user => {
+                // Only show users with NIC and role "Passenger"
+                if (user.nic && user.role === 'Passenger') {
+                    const option = document.createElement('option');
+                    option.value = user.nic;
+                    option.textContent = `${user.firstName} ${user.lastName} (${user.nic}) - ${user.email}`;
+                    select.appendChild(option);
+                }
+            });
+        }
+
+        function populateCreateScheduleDropdown() {
+            const select = document.getElementById('createScheduleId');
+            select.innerHTML = '<option value="">Select a schedule...</option>';
+            
+            schedules.forEach(schedule => {
+                const route = schedule.route || {};
+                const bus = schedule.bus || {};
+                const option = document.createElement('option');
+                option.value = schedule.scheduleId;
+                option.textContent = `${route.fromStand || 'N/A'} → ${route.toStand || 'N/A'} | ${schedule.travelDate || 'N/A'} | ${schedule.startTime || 'N/A'} | Bus: ${bus.registrationNo || 'N/A'} | Rs. ${schedule.fare || 'N/A'}`;
+                option.dataset.fare = schedule.fare || 0;
+                select.appendChild(option);
+            });
+        }
+
+        function updateCreateTotalPrice() {
+            const scheduleSelect = document.getElementById('createScheduleId');
+            const ticketCount = parseInt(document.getElementById('createBookedTickets').value) || 0;
+            
+            if (scheduleSelect.value && ticketCount > 0) {
+                const selectedOption = scheduleSelect.options[scheduleSelect.selectedIndex];
+                const fare = parseFloat(selectedOption.dataset.fare) || 0;
+                const totalPrice = fare * ticketCount;
+                document.getElementById('createTotalPrice').value = `Rs. ${totalPrice}`;
+            } else {
+                document.getElementById('createTotalPrice').value = '';
+            }
+        }
+
+        async function createBooking() {
+            const nic = document.getElementById('createPassengerNic').value;
+            const scheduleId = document.getElementById('createScheduleId').value;
+            const bookedTickets = parseInt(document.getElementById('createBookedTickets').value);
+            
+            if (!nic || !scheduleId || !bookedTickets || bookedTickets <= 0) {
+                showMessage('Please fill in all required fields with valid values', 'error');
+                return;
+            }
+            
+            // Find user details
+            const user = users.find(u => u.nic === nic);
+            if (!user) {
+                showMessage('Selected user not found', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('http://localhost:8080/api/bookings/admin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        phone: user.phone,
+                        email: user.email,
+                        nic: user.nic,
+                        bookedTickets: bookedTickets,
+                        scheduleId: parseInt(scheduleId)
+                    })
+                });
+
+                if (response.ok) {
+                    const newBooking = await response.json();
+                    showMessage('Booking created successfully!', 'success');
+                    closeCreateModal();
+                    loadBookings(); // Refresh the bookings list
+                } else {
+                    const errorData = await response.text();
+                    showMessage('Failed to create booking: ' + errorData, 'error');
+                }
+            } catch (error) {
+                console.error('Error creating booking:', error);
+                showMessage('Error creating booking: ' + error.message, 'error');
+            }
+        }
+
+
+
+        // Event listeners for update modal
+        document.addEventListener('DOMContentLoaded', () => {
+            // Update form submission
+            document.getElementById('updateBookingForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const bookingId = document.getElementById('updateBookingId').value;
+                const bookedTickets = document.getElementById('updateBookedTickets').value;
+                
+                if (!bookedTickets || bookedTickets <= 0) {
+                    showMessage('Please enter a valid number of tickets', 'error');
+                    return;
+                }
+                
+                updateBooking(bookingId, bookedTickets);
+            });
+
+            // Create form submission
+            document.getElementById('createBookingForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                createBooking();
+            });
+
+            // Update total price when ticket count changes
+            document.getElementById('updateBookedTickets').addEventListener('input', updateTotalPrice);
+            
+            // Create booking total price updates
+            document.getElementById('createScheduleId').addEventListener('change', updateCreateTotalPrice);
+            document.getElementById('createBookedTickets').addEventListener('input', updateCreateTotalPrice);
+
+            // Close modal when clicking outside
+            document.getElementById('updateBookingModal').addEventListener('click', (e) => {
+                if (e.target.id === 'updateBookingModal') {
+                    closeUpdateModal();
+                }
+            });
+            
+            document.getElementById('createBookingModal').addEventListener('click', (e) => {
+                if (e.target.id === 'createBookingModal') {
+                    closeCreateModal();
+                }
+            });
+            
+            document.getElementById('deleteBookingModal').addEventListener('click', (e) => {
+                if (e.target.id === 'deleteBookingModal') {
+                    closeDeleteModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

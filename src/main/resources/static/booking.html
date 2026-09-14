@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Search Buses | LankaRide</title>
+	<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+	<link rel="shortcut icon" href="assets/favicon.svg" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+	<link rel="stylesheet" href="css/srilanka-travel.css" />
+</head>
+<body class="lk-travel lk-home-page booking-page">
+	<div class="lr-topbar">
+		<div class="container-xl d-flex align-items-center justify-content-between gap-3">
+			<a href="feedback.html" class="lr-help-link">Need help booking?</a>
+			<div class="d-flex align-items-center gap-3">
+				<span>English</span>
+				<div class="lr-accessibility" aria-label="Font size controls">
+					<button type="button" aria-label="Decrease font size">A-</button>
+					<button type="button" aria-label="Default font size">A</button>
+					<button type="button" aria-label="Increase font size">A+</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<nav class="navbar lr-navbar sticky-top" id="mainNavbar">
+		<div class="container-xl">
+			<a class="navbar-brand lr-brand" href="index.html" aria-label="LankaRide home">
+				<span class="lr-brand-mark"><i class="bi bi-bus-front"></i></span>
+				<span>LankaRide</span>
+			</a>
+			<div class="d-flex align-items-center gap-4">
+				<ul class="navbar-nav flex-row mb-0 lr-nav-links">
+					<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+					<li class="nav-item"><a class="nav-link active" href="booking.html">Journeys</a></li>
+					<li class="nav-item"><a class="nav-link" href="profile.html">Tickets</a></li>
+					<li class="nav-item"><a class="nav-link" href="feedback.html">Support</a></li>
+					<li class="nav-item"><a class="nav-link hidden" id="navProfile" href="profile.html">Profile</a></li>
+				</ul>
+				<div class="d-flex align-items-center gap-2 lr-auth-actions">
+					<a href="login.html" id="navLogin" class="btn btn-outline-success lr-login-btn">Log in</a>
+					<a href="register.html" id="navSignup" class="btn btn-success lr-signup-btn">Sign up</a>
+					<div class="notification-wrapper hidden" id="notificationWrapper">
+						<button id="notificationBell" class="btn lr-icon-btn notification-trigger" type="button" aria-label="Notifications" aria-expanded="false" aria-controls="notificationDropdown">
+							<i class="bi bi-bell"></i>
+							<span id="notificationBadge" class="notification-badge hidden">0</span>
+						</button>
+						<div id="notificationDropdown" class="notification-dropdown hidden" aria-live="polite">
+							<div class="notification-header">
+								<h3>Notifications</h3>
+								<button type="button" class="mark-all-read" id="markAllRead" disabled>Mark all as read</button>
+							</div>
+							<div class="notification-list" id="notificationList">
+								<div class="notification-empty">
+									<i class="bi bi-bell-slash"></i>
+									<strong>You're all caught up</strong>
+									<span>New booking and support updates will appear here.</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<button id="navSignout" class="btn btn-outline-secondary hidden" type="button">Sign out</button>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<main class="booking-main">
+		<div class="booking-shell">
+			<header class="booking-header">
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Search Buses</li>
+					</ol>
+				</nav>
+				<p class="lr-eyebrow">Plan your journey</p>
+				<h1>Find Your Bus</h1>
+				<p>Choose your route, travel date and passenger count to view available bus services.</p>
+			</header>
+
+			<section class="booking-layout">
+				<article class="booking-search-card">
+					<div class="booking-card-heading">
+						<div>
+							<h2>Search available buses</h2>
+							<p>Select your departure point, destination and preferred travel date.</p>
+						</div>
+						<span class="booking-card-icon" aria-hidden="true"><i class="bi bi-search"></i></span>
+					</div>
+
+					<form class="booking-form-grid" id="bookingForm" novalidate>
+						<div class="booking-field">
+							<label for="district">District *</label>
+							<div class="booking-input-wrap">
+								<i class="bi bi-map"></i>
+								<select id="district" name="district" class="booking-control" required>
+									<option value="">Select district</option>
+								</select>
+							</div>
+							<p class="booking-field-help">Choose a district first to load stands.</p>
+							<p class="booking-error" id="districtError" aria-live="polite"></p>
+						</div>
+
+						<div class="booking-field">
+							<label for="date">Travel date *</label>
+							<div class="booking-input-wrap">
+								<i class="bi bi-calendar3"></i>
+								<input id="date" name="date" class="booking-control" type="date" required />
+							</div>
+							<p class="booking-field-help">Past dates are disabled.</p>
+							<p class="booking-error" id="dateError" aria-live="polite"></p>
+						</div>
+
+						<div class="booking-route-row">
+							<div class="booking-field">
+								<label for="from">From stand *</label>
+								<div class="booking-input-wrap">
+									<i class="bi bi-geo-alt"></i>
+									<select id="from" name="from" class="booking-control" required disabled>
+										<option value="">Select from stand</option>
+									</select>
+								</div>
+								<p class="booking-error" id="fromError" aria-live="polite"></p>
+							</div>
+
+							<button class="booking-swap-button" id="swapLocations" type="button" title="Swap locations" aria-label="Swap departure and destination" disabled>
+								<i class="bi bi-arrow-left-right"></i>
+							</button>
+
+							<div class="booking-field">
+								<label for="to">To stand *</label>
+								<div class="booking-input-wrap">
+									<i class="bi bi-geo-alt-fill"></i>
+									<select id="to" name="to" class="booking-control" required disabled>
+										<option value="">Select to stand</option>
+									</select>
+								</div>
+								<p class="booking-error" id="toError" aria-live="polite"></p>
+							</div>
+						</div>
+
+						<div class="booking-field">
+							<label for="count">Passengers *</label>
+							<div class="passenger-stepper">
+								<button type="button" id="decreasePassengers" aria-label="Decrease passengers"><i class="bi bi-dash"></i></button>
+								<input id="count" name="count" type="number" min="1" max="10" value="1" required readonly aria-label="Passenger count" />
+								<span id="passengerLabel">1 Passenger</span>
+								<button type="button" id="increasePassengers" aria-label="Increase passengers"><i class="bi bi-plus"></i></button>
+							</div>
+							<p class="booking-error" id="countError" aria-live="polite"></p>
+						</div>
+
+						<div class="booking-search-action">
+							<button class="booking-primary-button" id="searchButton" type="submit">
+								<i class="bi bi-search"></i>
+								<span>Search Buses</span>
+							</button>
+							<p class="booking-error booking-form-error" id="formError" aria-live="polite"></p>
+						</div>
+					</form>
+				</article>
+
+				<aside class="booking-sidebar">
+					<section class="popular-routes-card">
+						<div class="booking-side-heading">
+							<h2>Popular Routes</h2>
+							<p>Fast shortcuts for common intercity searches.</p>
+						</div>
+						<div class="popular-route-list" id="popularRoutes">
+							<button type="button" class="popular-route" data-district="Colombo" data-from="Colombo Fort" data-to="Kandy">
+								<span>Colombo Fort</span><i class="bi bi-arrow-right"></i><span>Kandy</span><strong>Select</strong>
+							</button>
+							<button type="button" class="popular-route" data-district="Colombo" data-from="Makumbura" data-to="Badulla">
+								<span>Makumbura</span><i class="bi bi-arrow-right"></i><span>Badulla</span><strong>Select</strong>
+							</button>
+							<button type="button" class="popular-route" data-district="Colombo" data-from="Colombo Fort" data-to="Jaffna">
+								<span>Colombo Fort</span><i class="bi bi-arrow-right"></i><span>Jaffna</span><strong>Select</strong>
+							</button>
+							<button type="button" class="popular-route" data-district="Gampaha" data-from="Kadawatha" data-to="Trincomalee">
+								<span>Kadawatha</span><i class="bi bi-arrow-right"></i><span>Trincomalee</span><strong>Select</strong>
+							</button>
+							<button type="button" class="popular-route" data-district="Colombo" data-from="Colombo Fort" data-to="Galle">
+								<span>Colombo Fort</span><i class="bi bi-arrow-right"></i><span>Galle</span><strong>Select</strong>
+							</button>
+						</div>
+						<p class="booking-error" id="routeShortcutError" aria-live="polite"></p>
+					</section>
+
+					<section class="booking-info-card">
+						<div class="booking-side-heading">
+							<h2>Before you book</h2>
+						</div>
+						<ul>
+							<li><i class="bi bi-check-circle"></i><span>Select the correct boarding stand.</span></li>
+							<li><i class="bi bi-check-circle"></i><span>Arrive at least 15 minutes before departure.</span></li>
+							<li><i class="bi bi-check-circle"></i><span>Keep your digital ticket ready for inspection.</span></li>
+							<li><i class="bi bi-check-circle"></i><span>Passenger details can be confirmed during seat selection.</span></li>
+						</ul>
+					</section>
+
+					<section class="booking-support-line">
+						<span>Need help finding a route?</span>
+						<a href="feedback.html">Contact Support</a>
+					</section>
+				</aside>
+			</section>
+		</div>
+	</main>
+
+	<footer class="lr-footer booking-footer">
+		<div class="container-xl">
+			<div class="booking-footer-grid">
+				<div>
+					<h2>LankaRide</h2>
+					<p>Online bus ticket booking for intercity journeys across Sri Lanka.</p>
+				</div>
+				<div>
+					<h3>Support</h3>
+					<a href="feedback.html">Help centre</a>
+					<a href="profile.html">Manage booking</a>
+					<a href="profile.html">Refund policy</a>
+				</div>
+				<div>
+					<h3>Contact</h3>
+					<span>+94 11 234 5678</span>
+					<span>support@lankaride.lk</span>
+				</div>
+			</div>
+			<div class="lr-footer-bottom">
+				<span id="footerYear"></span>
+				<div>
+					<a href="index.html">Privacy Policy</a>
+					<a href="index.html">Terms and Conditions</a>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		const districts = [
+			'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale', 'Nuwara Eliya',
+			'Galle', 'Matara', 'Hambantota', 'Jaffna', 'Kilinochchi', 'Mannar',
+			'Vavuniya', 'Mullaitivu', 'Batticaloa', 'Ampara', 'Trincomalee',
+			'Kurunegala', 'Puttalam', 'Anuradhapura', 'Polonnaruwa', 'Badulla',
+			'Monaragala', 'Ratnapura', 'Kegalle'
+		];
+
+		const districtStands = {
+			"Galle": [
+				"Galle", "Udugama", "Hikkaduwa", "Ambalangoda", "Bentota", "Koggala", 
+				"Unawatuna", "Weligama", "Mirissa", "Ahangama", "Kosgoda", "Balapitiya"
+			],
+			"Colombo": [
+				"Colombo", "Fort", "Pettah", "Bambalapitiya", "Wellawatta", "Dehiwala", 
+				"Mount Lavinia", "Moratuwa", "Panadura", "Kalutara", "Wattala", "Negombo"
+			],
+			"Kandy": [
+				"Kandy", "Peradeniya", "Kadugannawa", "Gampola", "Nawalapitiya", 
+				"Talawakele", "Hatton", "Nuwara Eliya", "Matale", "Dambulla"
+			],
+			"Matara": [
+				"Matara", "Weligama", "Mirissa", "Dikwella", "Tangalle", "Hambantota", 
+				"Tissamaharama", "Kataragama", "Weeraketiya", "Beliatte"
+			],
+			"Jaffna": [
+				"Jaffna", "Point Pedro", "Chavakachcheri", "Kilinochchi", "Mullaitivu", 
+				"Vavuniya", "Mannar", "Poonakari", "Nallur", "Kopay"
+			],
+			"Kurunegala": [
+				"Kurunegala", "Kuliyapitiya", "Nikaweratiya", "Puttalam", "Chilaw", 
+				"Anuradhapura", "Polonnaruwa", "Dambulla", "Maho", "Galgamuwa"
+			],
+			"Badulla": [
+				"Badulla", "Bandarawela", "Haputale", "Ella", "Wellawaya", "Monaragala", 
+				"Bibile", "Siyambalanduwa", "Ampara", "Kalmunai"
+			],
+			"Ratnapura": [
+				"Ratnapura", "Balangoda", "Eheliyagoda", "Kuruwita", "Embilipitiya", 
+				"Pelmadulla", "Kahawatta", "Nivithigala", "Rakwana", "Godakawela"
+			],
+			"Kegalle": [
+				"Kegalle", "Mawanella", "Rambukkana", "Warakapola", "Galigamuwa", 
+				"Aranayake", "Bulathkohupitiya", "Dehiowita", "Deraniyagala", "Yatiyantota"
+			],
+			"Kalutara": [
+				"Kalutara", "Panadura", "Moratuwa", "Beruwala", "Aluthgama", "Bentota", 
+				"Kosgoda", "Ahungalla", "Balapitiya", "Ambalangoda"
+			],
+			"Gampaha": [
+				"Gampaha", "Negombo", "Wattala", "Ja-Ela", "Katunayake", "Seeduwa", 
+				"Minuwangoda", "Veyangoda", "Nittambuwa", "Mirigama"
+			],
+			"Hambantota": [
+				"Hambantota", "Tangalle", "Tissamaharama", "Kataragama", "Weeraketiya", 
+				"Beliatte", "Ambalantota", "Ranna", "Katuwana", "Angunakolapelessa"
+			],
+			"Batticaloa": [
+				"Batticaloa", "Kalmunai", "Ampara", "Akkaraipattu", "Sainthamaruthu", 
+				"Kattankudy", "Eravur", "Valaichchenai", "Chenkalady", "Kokkadichcholai"
+			],
+			"Trincomalee": [
+				"Trincomalee", "Kinniya", "Muttur", "Kantalai", "Seruwila", "Gomarankadawala", 
+				"Kuchchaveli", "Nilaveli", "Uppuveli", "Koneswaram"
+			],
+			"Anuradhapura": [
+				"Anuradhapura", "Polonnaruwa", "Dambulla", "Sigiriya", "Habarana", 
+				"Kekirawa", "Mihintale", "Thambuttegama", "Eppawala", "Nochchiyagama"
+			],
+			"Polonnaruwa": [
+				"Polonnaruwa", "Hingurakgoda", "Kaduruwela", "Medirigiriya", "Lankapura", 
+				"Welikanda", "Dimbulagala", "Manampitiya", "Elahara", "Giritale"
+			],
+			"Nuwara Eliya": [
+				"Nuwara Eliya", "Hatton", "Talawakele", "Nanu Oya", "Ragala", "Welimada", 
+				"Kotagala", "Maskeliya", "Norwood", "Lindula"
+			],
+			"Matale": [
+				"Matale", "Dambulla", "Sigiriya", "Habarana", "Naula", "Rattota", 
+				"Ukuwela", "Palapathwela", "Laggala", "Wilgamuwa"
+			],
+			"Mannar": [
+				"Mannar", "Pesalai", "Nanattan", "Madhu", "Murunkan", "Vankalai", 
+				"Thalaimannar", "Erukkalampiddy", "Pallimunai", "Uyilankulam"
+			],
+			"Vavuniya": [
+				"Vavuniya", "Omanthai", "Cheddikulam", "Nedunkerny", "Puliyankulam", 
+				"Mamaduwa", "Poovarasankulam", "Periyamadu", "Kovilkulam", "Pampaimadu"
+			],
+			"Mullaitivu": [
+				"Mullaitivu", "Puthukkudiyiruppu", "Oddusuddan", "Mulliyawalai", 
+				"Kokkuthoduvai", "Alampil", "Kumulamunai", "Nayaru", "Vellamullivaikkal", "Karunaadu"
+			],
+			"Kilinochchi": [
+				"Kilinochchi", "Pallai", "Iranamadu", "Paranthan", "Akkarayankulam", 
+				"Kandawalai", "Poonakari", "Mullaitivu", "Elephant Pass", "Chundikulam"
+			],
+			"Ampara": [
+				"Ampara", "Kalmunai", "Akkaraipattu", "Sainthamaruthu", "Sammanthurai", 
+				"Pottuvil", "Arugam Bay", "Lahugala", "Uhana", "Maha Oya"
+			],
+			"Puttalam": [
+				"Puttalam", "Chilaw", "Wennappuwa", "Marawila", "Nattandiya", "Madampe", 
+				"Anamaduwa", "Kalpitiya", "Vanathavilluwa", "Karuwalagaswewa"
+			],
+			"Monaragala": [
+				"Monaragala", "Bibile", "Siyambalanduwa", "Wellawaya", "Buttala", 
+				"Kataragama", "Tissamaharama", "Hambantota", "Tanamalwila", "Medagama"
+			]
+		};
+
+		const ROUTES_API = 'http://localhost:8080/api/routes';
+		let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+		let notificationDropdownVisible = false;
+		const maxPassengers = 10;
+		let backendRoutes = [];
+
+		document.addEventListener('DOMContentLoaded', async () => {
+			await loadBackendRoutes();
+			populateDistricts();
+			setMinDate();
+			initializeSearchableDropdowns();
+			setupBookingEvents();
+			syncAuthUI();
+			setupNotifications();
+			document.getElementById('footerYear').textContent = `© ${new Date().getFullYear()} LankaRide`;
+		});
+
+		async function loadBackendRoutes() {
+			try {
+				const response = await fetch(ROUTES_API);
+				if (!response.ok) return;
+				backendRoutes = await response.json();
+				if (!Array.isArray(backendRoutes)) {
+					backendRoutes = [];
+					return;
+				}
+
+				backendRoutes.forEach(route => {
+					const district = route.district || inferDistrictForRoute(route) || 'Colombo';
+					if (!districts.includes(district)) districts.push(district);
+					addStandToDistrict(district, route.fromStand);
+					addStandToDistrict(district, route.toStand);
+				});
+			} catch (error) {
+				console.error("We couldn't load the locations. Please try again.", error);
+			}
+		}
+
+		function addStandToDistrict(district, stand) {
+			if (!district || !stand) return;
+			if (!districtStands[district]) districtStands[district] = [];
+			if (!districtStands[district].includes(stand)) districtStands[district].push(stand);
+		}
+
+		function inferDistrictForRoute(route) {
+			return districts.find(district => {
+				const stands = districtStands[district] || [];
+				return stands.includes(route.fromStand) || stands.includes(route.toStand);
+			});
+		}
+
+		function populateDistricts() {
+			const districtSelect = document.getElementById('district');
+			districts.forEach(district => {
+				const option = document.createElement('option');
+				option.value = district;
+				option.textContent = district;
+				districtSelect.appendChild(option);
+			});
+			
+			districtSelect.addEventListener('change', function() {
+				const selectedDistrict = this.value;
+				clearFieldError('district');
+				if (selectedDistrict) {
+					populateStandsForDistrict(selectedDistrict);
+				} else {
+					resetStandSelects();
+				}
+				validateRoute();
+			});
+		}
+
+		function populateStandsForDistrict(district) {
+			const stands = districtStands[district] || [];
+			const fromSelect = document.getElementById('from');
+			const toSelect = document.getElementById('to');
+			fromSelect.innerHTML = '<option value="">Select from stand</option>';
+			toSelect.innerHTML = '<option value="">Select to stand</option>';
+
+			stands.forEach(stand => {
+				const fromOption = document.createElement('option');
+				fromOption.value = stand;
+				fromOption.textContent = stand;
+				fromSelect.appendChild(fromOption);
+
+				const toOption = document.createElement('option');
+				toOption.value = stand;
+				toOption.textContent = stand;
+				toSelect.appendChild(toOption);
+			});
+
+			const hasStands = stands.length > 0;
+			fromSelect.disabled = !hasStands;
+			toSelect.disabled = !hasStands;
+			document.getElementById('swapLocations').disabled = !hasStands;
+
+			if (!hasStands) {
+				setError('district', 'No stands are available for this district.');
+			}
+		}
+
+		function resetStandSelects() {
+			document.getElementById('from').innerHTML = '<option value="">Select from stand</option>';
+			document.getElementById('to').innerHTML = '<option value="">Select to stand</option>';
+			document.getElementById('from').disabled = true;
+			document.getElementById('to').disabled = true;
+			document.getElementById('swapLocations').disabled = true;
+		}
+
+		function initializeSearchableDropdowns() {
+			['district', 'from', 'to'].forEach(id => {
+				const select = document.getElementById(id);
+				let searchTimeout;
+				select.addEventListener('keydown', function(e) {
+					if (e.key.length === 1 || e.key === 'Backspace') {
+						clearTimeout(searchTimeout);
+						searchTimeout = setTimeout(() => filterSelectOptions(this, e.target.value), 100);
+					}
+				});
+			});
+		}
+
+		function filterSelectOptions(selectElement, searchTerm) {
+			const options = Array.from(selectElement.options);
+			const searchLower = searchTerm.toLowerCase();
+			options.forEach(option => {
+				if (option.value === '' || option.text.toLowerCase().includes(searchLower)) {
+					option.style.display = 'block';
+				} else {
+					option.style.display = 'none';
+				}
+			});
+		}
+
+		function getLocalDateValue(date) {
+			const year = date.getFullYear();
+			const month = String(date.getMonth() + 1).padStart(2, '0');
+			const day = String(date.getDate()).padStart(2, '0');
+			return `${year}-${month}-${day}`;
+		}
+
+		function setMinDate() {
+			const dateInput = document.getElementById('date');
+			const today = getLocalDateValue(new Date());
+			dateInput.setAttribute('min', today);
+			if (!dateInput.value || dateInput.value < today) dateInput.value = today;
+		}
+
+		function setupBookingEvents() {
+			document.getElementById('from').addEventListener('change', validateRoute);
+			document.getElementById('to').addEventListener('change', validateRoute);
+			document.getElementById('date').addEventListener('change', validateDate);
+			document.getElementById('decreasePassengers').addEventListener('click', () => updatePassengerCount(-1));
+			document.getElementById('increasePassengers').addEventListener('click', () => updatePassengerCount(1));
+			document.getElementById('swapLocations').addEventListener('click', swapLocations);
+
+			document.querySelectorAll('.popular-route').forEach(button => {
+				button.addEventListener('click', () => selectPopularRoute(button));
+			});
+
+			document.getElementById('bookingForm').addEventListener('submit', handleBookingSubmit);
+			updatePassengerLabel();
+		}
+
+		function updatePassengerCount(change) {
+			const countInput = document.getElementById('count');
+			const nextValue = Math.min(maxPassengers, Math.max(1, Number(countInput.value || 1) + change));
+			countInput.value = nextValue;
+			updatePassengerLabel();
+			validatePassengerCount();
+		}
+
+		function updatePassengerLabel() {
+			const value = Number(document.getElementById('count').value || 1);
+			document.getElementById('passengerLabel').textContent = `${value} Passenger${value === 1 ? '' : 's'}`;
+			document.getElementById('decreasePassengers').disabled = value <= 1;
+			document.getElementById('increasePassengers').disabled = value >= maxPassengers;
+		}
+
+		function swapLocations() {
+			const fromSelect = document.getElementById('from');
+			const toSelect = document.getElementById('to');
+			if (fromSelect.disabled || toSelect.disabled) return;
+			const currentFrom = fromSelect.value;
+			fromSelect.value = toSelect.value;
+			toSelect.value = currentFrom;
+			validateRoute();
+		}
+
+		function selectPopularRoute(button) {
+			let district = button.dataset.district;
+			let from = button.dataset.from;
+			let to = button.dataset.to;
+			const matchedRoute = backendRoutes.find(route => route.fromStand === from && route.toStand === to);
+			if (matchedRoute) {
+				district = matchedRoute.district || district;
+				from = matchedRoute.fromStand;
+				to = matchedRoute.toStand;
+				addStandToDistrict(district, from);
+				addStandToDistrict(district, to);
+			}
+
+			const stands = districtStands[district] || [];
+			const shortcutError = document.getElementById('routeShortcutError');
+
+			if (!districts.includes(district) || !stands.includes(from) || !stands.includes(to)) {
+				shortcutError.textContent = 'This route is not in the configured stand list yet. Please select the stands manually.';
+				return;
+			}
+
+			shortcutError.textContent = '';
+			const districtSelect = document.getElementById('district');
+			districtSelect.value = district;
+			districtSelect.dispatchEvent(new Event('change'));
+			document.getElementById('from').value = from;
+			document.getElementById('to').value = to;
+			validateRoute();
+			document.querySelector('.booking-search-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+		}
+
+		function setError(field, message) {
+			document.getElementById(`${field}Error`).textContent = message;
+			const control = document.getElementById(field);
+			if (control) control.classList.toggle('is-invalid', !!message);
+		}
+
+		function clearFieldError(field) {
+			setError(field, '');
+		}
+
+		function validateRoute() {
+			const district = document.getElementById('district').value.trim();
+			const from = document.getElementById('from').value.trim();
+			const to = document.getElementById('to').value.trim();
+			let valid = true;
+
+			setError('district', district ? '' : 'Please select a district.');
+			setError('from', from ? '' : 'Please select a departure stand.');
+			setError('to', to ? '' : 'Please select a destination stand.');
+
+			if (!district || !from || !to) valid = false;
+			if (from && to && from === to) {
+				setError('to', 'Departure and destination cannot be the same.');
+				valid = false;
+			}
+
+			return valid;
+		}
+
+		function validateDate() {
+			const dateInput = document.getElementById('date');
+			const today = dateInput.min;
+			if (!dateInput.value) {
+				setError('date', 'Please select a travel date.');
+				return false;
+			}
+			if (dateInput.value < today) {
+				setError('date', 'Please select today or a future travel date.');
+				return false;
+			}
+			clearFieldError('date');
+			return true;
+		}
+
+		function validatePassengerCount() {
+			const count = parseInt(document.getElementById('count').value, 10);
+			if (!Number.isInteger(count) || count < 1 || count > maxPassengers) {
+				setError('count', `Passenger count must be between 1 and ${maxPassengers}.`);
+				return false;
+			}
+			clearFieldError('count');
+			return true;
+		}
+
+		function handleBookingSubmit(e) {
+			e.preventDefault();
+			const searchButton = document.getElementById('searchButton');
+			const searchLabel = searchButton.querySelector('span');
+			const routeValid = validateRoute();
+			const dateValid = validateDate();
+			const countValid = validatePassengerCount();
+			const formError = document.getElementById('formError');
+
+			if (!routeValid || !dateValid || !countValid) {
+				formError.textContent = 'Please fix the highlighted fields before searching.';
+				return;
+			}
+
+			formError.textContent = '';
+			searchButton.disabled = true;
+			searchLabel.textContent = 'Searching...';
+
+			const district = document.getElementById('district').value.trim();
+			const from = document.getElementById('from').value.trim();
+			const to = document.getElementById('to').value.trim();
+			const date = document.getElementById('date').value;
+			const count = parseInt(document.getElementById('count').value, 10);
+
+			localStorage.setItem('pendingBooking', JSON.stringify({ district, from, to, date, count }));
+			const qs = new URLSearchParams({ district, from, to, date }).toString();
+			window.location.href = `availability.html?${qs}`;
+		}
+
+		function syncAuthUI() {
+			const loggedIn = !!currentUser;
+			const isPassenger = loggedIn && currentUser.role && currentUser.role.toLowerCase() === 'passenger';
+			document.getElementById('navLogin').classList.toggle('hidden', loggedIn);
+			document.getElementById('navSignup').classList.toggle('hidden', loggedIn);
+			document.getElementById('navProfile').classList.toggle('hidden', !loggedIn);
+			document.getElementById('navSignout').classList.toggle('hidden', !loggedIn);
+			document.getElementById('notificationWrapper').classList.toggle('hidden', !isPassenger);
+		}
+
+		function setupNotifications() {
+			document.getElementById('navSignout').addEventListener('click', () => {
+				localStorage.removeItem('currentUser');
+				currentUser = null;
+				syncAuthUI();
+				window.location.href = 'index.html';
+			});
+
+			document.getElementById('notificationBell').addEventListener('click', (event) => {
+				event.stopPropagation();
+				setNotificationDropdown(!notificationDropdownVisible);
+			});
+
+			document.getElementById('notificationDropdown').addEventListener('click', (event) => {
+				event.stopPropagation();
+			});
+
+			document.getElementById('markAllRead').addEventListener('click', () => {
+				if (!currentUser || !currentUser.nic) return;
+				fetch(`/api/notifications/user/${currentUser.nic}/read-all`, { method: 'PUT' })
+					.then(loadNotifications)
+					.catch(error => console.error('Error marking all as read:', error));
+			});
+
+			document.addEventListener('click', (event) => {
+				const wrapper = document.getElementById('notificationWrapper');
+				if (!wrapper.contains(event.target)) setNotificationDropdown(false);
+			});
+
+			document.addEventListener('keydown', (event) => {
+				if (event.key === 'Escape') setNotificationDropdown(false);
+			});
+
+			window.addEventListener('scroll', () => {
+				document.getElementById('mainNavbar').classList.toggle('is-scrolled', window.scrollY > 8);
+			});
+
+			if (currentUser && currentUser.role && currentUser.role.toLowerCase() === 'passenger') {
+				updateNotificationBadge();
+				setInterval(updateNotificationBadge, 30000);
+			}
+		}
+
+		function getTimeAgo(dateString) {
+			const now = new Date();
+			const past = new Date(dateString);
+			const seconds = Math.floor((now - past) / 1000);
+			if (seconds < 60) return 'Just now';
+			const minutes = Math.floor(seconds / 60);
+			if (minutes < 60) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+			const hours = Math.floor(minutes / 60);
+			if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+			const days = Math.floor(hours / 24);
+			return `${days} day${days > 1 ? 's' : ''} ago`;
+		}
+
+		function loadNotifications() {
+			if (!currentUser || !currentUser.nic) return;
+			fetch(`/api/notifications/user/${currentUser.nic}`)
+				.then(response => response.json())
+				.then(notifications => {
+					displayNotifications(notifications);
+					updateNotificationBadge();
+				})
+				.catch(error => console.error('Error loading notifications:', error));
+		}
+
+		function getNotificationEmptyState() {
+			return `
+				<div class="notification-empty">
+					<i class="bi bi-bell-slash"></i>
+					<strong>You're all caught up</strong>
+					<span>New booking and support updates will appear here.</span>
+				</div>
+			`;
+		}
+
+		function getNotificationTitle(notification) {
+			const message = (notification.message || '').toLowerCase();
+			if (message.includes('booking') || message.includes('reservation')) return 'Booking update';
+			if (message.includes('payment')) return 'Payment update';
+			if (message.includes('feedback') || message.includes('support')) return 'Support update';
+			return 'LankaRide update';
+		}
+
+		function displayNotifications(notifications) {
+			const list = document.getElementById('notificationList');
+			const markAllButton = document.getElementById('markAllRead');
+			const items = Array.isArray(notifications) ? notifications : [];
+			markAllButton.disabled = !items.some(notification => !notification.isRead);
+			if (items.length === 0) {
+				list.innerHTML = getNotificationEmptyState();
+				return;
+			}
+
+			list.innerHTML = items.map(notification => `
+				<button class="notification-item ${!notification.isRead ? 'unread' : ''}" data-id="${notification.id}" type="button">
+					<span class="notification-type-icon"><i class="bi bi-bell"></i></span>
+					<span class="notification-content">
+						<span class="notification-title">${getNotificationTitle(notification)}</span>
+						<span class="notification-message">${notification.message || 'You have a new LankaRide update.'}</span>
+						<span class="notification-time">${getTimeAgo(notification.createdAt)}</span>
+					</span>
+					${!notification.isRead ? '<span class="notification-dot" aria-hidden="true"></span>' : '<span></span>'}
+				</button>
+			`).join('');
+
+			list.querySelectorAll('.notification-item').forEach(item => {
+				item.addEventListener('click', () => markNotificationAsRead(item.dataset.id));
+			});
+		}
+
+		function updateNotificationBadge() {
+			if (!currentUser || !currentUser.nic) return;
+			fetch(`/api/notifications/user/${currentUser.nic}/count`)
+				.then(response => response.json())
+				.then(data => {
+					const badge = document.getElementById('notificationBadge');
+					if (data.unreadCount > 0) {
+						badge.textContent = data.unreadCount > 99 ? '99+' : data.unreadCount;
+						badge.classList.remove('hidden');
+					} else {
+						badge.classList.add('hidden');
+					}
+				})
+				.catch(error => console.error('Error updating notification badge:', error));
+		}
+
+		function markNotificationAsRead(notificationId) {
+			fetch(`/api/notifications/${notificationId}/read`, { method: 'PUT' })
+				.then(loadNotifications)
+				.catch(error => console.error('Error marking notification as read:', error));
+		}
+
+		function setNotificationDropdown(open) {
+			const dropdown = document.getElementById('notificationDropdown');
+			const bell = document.getElementById('notificationBell');
+			notificationDropdownVisible = open;
+			dropdown.classList.toggle('is-open', open);
+			dropdown.classList.toggle('hidden', !open);
+			bell.setAttribute('aria-expanded', String(open));
+			if (open) loadNotifications();
+		}
+	</script>
+</body>
+</html>
