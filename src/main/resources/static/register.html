@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Create Account | LankaRide</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+	<link rel="stylesheet" href="css/srilanka-travel.css" />
+</head>
+<body class="lk-travel auth-page auth-register-page">
+	<header class="auth-header">
+		<div class="auth-header-inner">
+			<a class="auth-brand" href="index.html" aria-label="LankaRide home">
+				<span class="lr-brand-mark"><i class="bi bi-bus-front"></i></span>
+				<span>LankaRide</span>
+			</a>
+			<a class="auth-home-link" href="index.html">
+				<i class="bi bi-arrow-left"></i>
+				<span>Back to Home</span>
+			</a>
+		</div>
+	</header>
+
+	<main class="auth-layout">
+		<section class="auth-brand-panel" aria-labelledby="authBrandHeading">
+			<div class="auth-route-map" aria-hidden="true">
+				<span class="route-node node-a"></span>
+				<span class="route-node node-b"></span>
+				<span class="route-node node-c"></span>
+				<span class="route-bus"><i class="bi bi-bus-front"></i></span>
+			</div>
+			<div class="auth-brand-content">
+				<p class="lr-eyebrow">Sri Lanka online bus booking</p>
+				<h1 id="authBrandHeading">Create your LankaRide account</h1>
+				<p>Search routes, reserve seats and manage your bus journeys from one secure account.</p>
+				<ul class="auth-benefits" aria-label="LankaRide account benefits">
+					<li><i class="bi bi-ticket-perforated"></i><span>Access live seat availability</span></li>
+					<li><i class="bi bi-folder-check"></i><span>Keep digital tickets in one place</span></li>
+					<li><i class="bi bi-bell"></i><span>Receive booking and journey updates</span></li>
+				</ul>
+			</div>
+		</section>
+
+		<section class="auth-form-panel" aria-labelledby="registerHeading">
+			<div class="auth-card auth-card-wide">
+				<div class="auth-card-header">
+					<h2 id="registerHeading">Create your account</h2>
+					<p>Register to reserve seats and manage your LankaRide journeys.</p>
+				</div>
+
+				<form class="auth-form" id="registerForm" novalidate>
+					<div id="registerValidationSummary" class="auth-alert" role="alert" aria-live="polite">
+						<i class="bi bi-exclamation-circle"></i>
+						<div>
+							<strong>Please fix the following fields.</strong>
+							<ul id="registerValidationErrors"></ul>
+						</div>
+					</div>
+
+					<div class="auth-form-grid">
+						<div class="auth-field">
+							<label for="firstName">First name</label>
+							<div class="auth-input-wrap">
+								<i class="bi bi-person"></i>
+								<input class="auth-input" type="text" id="firstName" placeholder="Lakshitha" autocomplete="given-name" required aria-describedby="firstNameError" />
+							</div>
+							<span id="firstNameError" class="auth-error"></span>
+						</div>
+
+						<div class="auth-field">
+							<label for="lastName">Last name</label>
+							<div class="auth-input-wrap">
+								<i class="bi bi-person"></i>
+								<input class="auth-input" type="text" id="lastName" placeholder="Dilshan" autocomplete="family-name" required aria-describedby="lastNameError" />
+							</div>
+							<span id="lastNameError" class="auth-error"></span>
+						</div>
+
+						<div class="auth-field">
+							<label for="phone">Phone</label>
+							<div class="auth-input-wrap">
+								<i class="bi bi-telephone"></i>
+								<input class="auth-input" type="tel" id="phone" placeholder="0771234567" autocomplete="tel" required aria-describedby="phoneError" />
+							</div>
+							<span id="phoneError" class="auth-error"></span>
+						</div>
+
+						<div class="auth-field">
+							<label for="email">Email</label>
+							<div class="auth-input-wrap">
+								<i class="bi bi-envelope"></i>
+								<input class="auth-input" type="email" id="email" placeholder="name@example.com" autocomplete="email" required aria-describedby="emailError" />
+							</div>
+							<span id="emailError" class="auth-error"></span>
+						</div>
+					</div>
+
+					<div class="auth-field">
+						<label for="nic">NIC number</label>
+						<div class="auth-input-wrap">
+							<i class="bi bi-card-text"></i>
+							<input class="auth-input" type="text" id="nic" placeholder="200423601980 or 901234567V" autocomplete="off" required aria-describedby="nicError" />
+						</div>
+						<span id="nicError" class="auth-error"></span>
+					</div>
+
+					<div class="auth-field">
+						<label for="password">Password</label>
+						<div class="auth-input-wrap password-control">
+							<i class="bi bi-lock"></i>
+							<input class="auth-input" type="password" id="password" placeholder="Create a password" autocomplete="new-password" required aria-describedby="passwordError passwordHelp" />
+							<button class="password-toggle" type="button" data-target="password" aria-label="Show password">
+								<i class="bi bi-eye"></i>
+							</button>
+						</div>
+						<span id="passwordError" class="auth-error"></span>
+						<span id="passwordHelp" class="auth-help">Use at least 8 characters with uppercase, lowercase and a number.</span>
+					</div>
+
+					<button type="submit" class="auth-primary-btn" id="registerSubmitBtn">
+						<span>Create Account</span>
+					</button>
+
+					<p class="auth-switch-text">Already have an account? <a href="login.html">Sign in</a></p>
+					<p class="auth-footer-text">By creating an account, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
+				</form>
+			</div>
+		</section>
+	</main>
+
+	<script>
+		const API = 'http://localhost:8080/api/users';
+
+		document.addEventListener('DOMContentLoaded', () => {
+			setupRegisterValidation();
+			setupPasswordToggles();
+		});
+
+		document.getElementById('registerForm').addEventListener('submit', async (e) => {
+			e.preventDefault();
+			await registerUser();
+		});
+
+		function setupPasswordToggles() {
+			document.querySelectorAll('.password-toggle').forEach(button => {
+				button.addEventListener('click', () => {
+					const input = document.getElementById(button.dataset.target);
+					const show = input.type === 'password';
+					input.type = show ? 'text' : 'password';
+					button.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+					button.querySelector('i').className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+				});
+			});
+		}
+
+		function validateFirstName(firstName) {
+			const trimmed = firstName.trim();
+			if (!trimmed) return 'First name is required.';
+			if (trimmed.length < 2) return 'First name must be at least 2 characters long.';
+			if (trimmed.length > 50) return 'First name must be less than 50 characters.';
+			if (!/^[a-zA-Z\s'-]+$/.test(trimmed)) return 'First name can only contain letters, spaces, hyphens and apostrophes.';
+			return null;
+		}
+
+		function validateLastName(lastName) {
+			const trimmed = lastName.trim();
+			if (!trimmed) return 'Last name is required.';
+			if (trimmed.length < 2) return 'Last name must be at least 2 characters long.';
+			if (trimmed.length > 50) return 'Last name must be less than 50 characters.';
+			if (!/^[a-zA-Z\s'-]+$/.test(trimmed)) return 'Last name can only contain letters, spaces, hyphens and apostrophes.';
+			return null;
+		}
+
+		function validateEmail(email) {
+			const trimmed = email.trim();
+			if (!trimmed) return 'Email is required.';
+			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			if (!emailRegex.test(trimmed)) return 'Please enter a valid email address.';
+			if (trimmed.length > 100) return 'Email must be less than 100 characters.';
+			return null;
+		}
+
+		function validatePhone(phone) {
+			const trimmed = phone.trim();
+			if (!trimmed) return 'Phone number is required.';
+			const digitsOnly = trimmed.replace(/\D/g, '');
+			if (digitsOnly.length !== 10) return 'Phone number must be exactly 10 digits, for example 0771234567.';
+			const phoneRegex = /^[0-9\s\-\(\)]{10,15}$/;
+			if (!phoneRegex.test(trimmed)) return 'Please enter a valid Sri Lankan phone number.';
+			return null;
+		}
+
+		function validateNIC(nic) {
+			const trimmed = nic.trim();
+			if (!trimmed) return 'NIC number is required.';
+			const newNicRegex = /^[0-9]{12}$/;
+			const oldNicRegex = /^[0-9]{9}[VX]$/i;
+			if (!newNicRegex.test(trimmed) && !oldNicRegex.test(trimmed)) {
+				return 'Please enter a valid NIC: 12 digits or 9 digits followed by V or X.';
+			}
+			return null;
+		}
+
+		function validatePassword(password) {
+			if (!password) return 'Password is required.';
+			if (password.length < 8) return 'Password must be at least 8 characters long.';
+			if (password.length > 100) return 'Password must be less than 100 characters.';
+			const hasUpperCase = /[A-Z]/.test(password);
+			const hasLowerCase = /[a-z]/.test(password);
+			const hasNumbers = /\d/.test(password);
+			if (!hasUpperCase || !hasLowerCase || !hasNumbers) {
+				return 'Password must contain uppercase, lowercase and number characters.';
+			}
+			return null;
+		}
+
+		function setupRegisterValidation() {
+			const inputs = [
+				{ id: 'firstName', validator: validateFirstName, errorId: 'firstNameError' },
+				{ id: 'lastName', validator: validateLastName, errorId: 'lastNameError' },
+				{ id: 'email', validator: validateEmail, errorId: 'emailError' },
+				{ id: 'phone', validator: validatePhone, errorId: 'phoneError' },
+				{ id: 'nic', validator: validateNIC, errorId: 'nicError' },
+				{ id: 'password', validator: validatePassword, errorId: 'passwordError' }
+			];
+
+			inputs.forEach(({ id, validator, errorId }) => {
+				const input = document.getElementById(id);
+				const errorElement = document.getElementById(errorId);
+				input.addEventListener('input', () => validateField(input, validator, errorElement));
+				input.addEventListener('blur', () => validateField(input, validator, errorElement));
+			});
+
+			document.getElementById('phone').addEventListener('input', function(e) {
+				e.target.value = e.target.value.replace(/[^0-9\s\-\(\)]/g, '');
+			});
+
+			document.getElementById('nic').addEventListener('input', function(e) {
+				let value = e.target.value.toUpperCase().replace(/[^0-9VX]/g, '');
+				const oldNicMatch = value.match(/^([0-9]{0,9})([VX]?)$/);
+				if (oldNicMatch && oldNicMatch[2]) {
+					value = oldNicMatch[1] + oldNicMatch[2];
+				} else {
+					value = value.replace(/[VX]/g, '').substring(0, 12);
+				}
+				e.target.value = value;
+			});
+		}
+
+		function validateField(input, validator, errorElement) {
+			const error = validator(input.value);
+			input.classList.toggle('error', !!error);
+			input.classList.toggle('success', !error && !!input.value);
+			errorElement.textContent = error || '';
+		}
+
+		function validateRegisterForm() {
+			const inputs = [
+				{ id: 'firstName', validator: validateFirstName, errorId: 'firstNameError' },
+				{ id: 'lastName', validator: validateLastName, errorId: 'lastNameError' },
+				{ id: 'email', validator: validateEmail, errorId: 'emailError' },
+				{ id: 'phone', validator: validatePhone, errorId: 'phoneError' },
+				{ id: 'nic', validator: validateNIC, errorId: 'nicError' },
+				{ id: 'password', validator: validatePassword, errorId: 'passwordError' }
+			];
+
+			const errors = [];
+			let isValid = true;
+			inputs.forEach(({ id, validator, errorId }) => {
+				const input = document.getElementById(id);
+				const errorElement = document.getElementById(errorId);
+				const error = validator(input.value);
+				input.classList.toggle('error', !!error);
+				input.classList.toggle('success', !error && !!input.value);
+				errorElement.textContent = error || '';
+				if (error) {
+					errors.push(error);
+					isValid = false;
+				}
+			});
+
+			const validationSummary = document.getElementById('registerValidationSummary');
+			const validationErrors = document.getElementById('registerValidationErrors');
+			if (!isValid) {
+				validationErrors.innerHTML = errors.map(error => `<li>${error}</li>`).join('');
+				validationSummary.classList.add('show');
+			} else {
+				validationSummary.classList.remove('show');
+			}
+			return isValid;
+		}
+
+		function clearRegisterValidationErrors() {
+			const inputs = ['firstName', 'lastName', 'email', 'phone', 'nic', 'password'];
+			const errorIds = ['firstNameError', 'lastNameError', 'emailError', 'phoneError', 'nicError', 'passwordError'];
+			inputs.forEach((inputId, index) => {
+				const input = document.getElementById(inputId);
+				const errorElement = document.getElementById(errorIds[index]);
+				input.classList.remove('error', 'success');
+				errorElement.textContent = '';
+			});
+			document.getElementById('registerValidationSummary').classList.remove('show');
+		}
+
+		function showRegisterError(message) {
+			const summary = document.getElementById('registerValidationSummary');
+			document.getElementById('registerValidationErrors').innerHTML = `<li>${message}</li>`;
+			summary.classList.add('show');
+			summary.classList.remove('success');
+		}
+
+		async function registerUser() {
+			if (!validateRegisterForm()) return;
+
+			const submitButton = document.getElementById('registerSubmitBtn');
+			const submitText = submitButton.querySelector('span');
+			const firstName = document.getElementById('firstName').value.trim();
+			const lastName = document.getElementById('lastName').value.trim();
+			const phone = document.getElementById('phone').value.trim();
+			const email = document.getElementById('email').value.trim();
+			const nic = document.getElementById('nic').value.trim();
+			const password = document.getElementById('password').value;
+
+			const user = { firstName, lastName, phone, email, nic, password };
+
+			submitButton.disabled = true;
+			submitText.textContent = 'Creating account...';
+
+			try {
+				const res = await fetch(`${API}/register`, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(user)
+				});
+				if (res.ok) {
+					const summary = document.getElementById('registerValidationSummary');
+					document.getElementById('registerValidationErrors').innerHTML = '<li>Your LankaRide account has been created successfully.</li>';
+					summary.classList.add('show', 'success');
+					setTimeout(() => {
+						window.location.href = 'login.html';
+					}, 650);
+				} else {
+					const responseText = await res.text();
+					const duplicateMessage = responseText && responseText.toLowerCase().includes('nic')
+						? 'This NIC number is already registered.'
+						: responseText && responseText.toLowerCase().includes('email')
+							? 'This email address is already registered.'
+							: 'Registration failed. Please check your details and try again.';
+					showRegisterError(duplicateMessage);
+				}
+			} catch (error) {
+				console.error('Registration error:', error);
+				showRegisterError('Network or server error. Please try again.');
+			} finally {
+				submitButton.disabled = false;
+				submitText.textContent = 'Create Account';
+			}
+		}
+	</script>
+</body>
+</html>

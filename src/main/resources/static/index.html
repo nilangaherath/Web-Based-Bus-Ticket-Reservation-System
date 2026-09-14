@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>LankaRide | Book Bus Tickets Online in Sri Lanka</title>
+	<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+	<link rel="shortcut icon" href="assets/favicon.svg" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+	<link rel="stylesheet" href="css/srilanka-travel.css" />
+	<style>
+		/* Clean, Modern & Professional Typography and Cards */
+		body.lk-home-page {
+			font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+			color: #1e293b;
+		}
+
+		.lr-glass-card {
+			background: #ffffff !important;
+			border: 1px solid #e2e8f0 !important;
+			border-radius: 16px !important;
+			box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04) !important;
+			transition: all 0.25s ease !important;
+		}
+
+		.lr-section-heading.text-center {
+			text-align: center;
+			margin-bottom: 40px;
+		}
+
+		.lr-section-heading h2 {
+			font-size: 2rem !important;
+			font-weight: 700 !important;
+			color: #0f172a !important;
+			letter-spacing: -0.02em !important;
+			margin-bottom: 8px;
+			background: none !important;
+			-webkit-text-fill-color: initial !important;
+		}
+
+		.lr-badge-glow {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			padding: 5px 14px;
+			border-radius: 999px;
+			background: #ecfdf5;
+			border: 1px solid #a7f3d0;
+			color: #047857;
+			font-size: 12px;
+			font-weight: 700;
+			letter-spacing: 0.04em;
+			text-transform: uppercase;
+			margin-bottom: 10px;
+			box-shadow: none !important;
+			animation: none !important;
+		}
+
+		.lr-badge-glow i {
+			font-size: 13px;
+		}
+
+		.lr-section-heading .lr-subtitle {
+			color: #64748b;
+			font-size: 1rem;
+			font-weight: 400;
+			margin-top: 4px;
+			max-width: 600px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.lr-section-heading .lr-subtitle::after {
+			display: none !important;
+		}
+
+		/* Subtle, Natural Card Hover Effects */
+		.lr-journey-card,
+		.lr-feature-card,
+		.lr-process-card,
+		.feedback-item {
+			transition: all 0.25s ease !important;
+			border-radius: 16px !important;
+		}
+
+		.lr-journey-card:hover,
+		.lr-feature-card:hover,
+		.lr-process-card:hover,
+		.feedback-item:hover {
+			transform: translateY(-4px) !important;
+			border-color: #cbd5e1 !important;
+			box-shadow: 0 12px 24px -6px rgba(15, 23, 42, 0.08) !important;
+		}
+
+		.lr-journey-card:hover .lr-card-icon,
+		.lr-feature-card:hover .lr-feature-icon-wrapper,
+		.lr-process-card:hover .lr-process-icon {
+			transform: none !important;
+		}
+
+		.lr-journey-card h3,
+		.lr-feature-card h3,
+		.lr-process-card h3 {
+			font-weight: 600 !important;
+			color: #0f172a;
+		}
+
+		.lr-process-card {
+			position: relative;
+			padding: 28px 20px;
+			text-align: center;
+		}
+
+		.lr-process-badge {
+			width: 36px;
+			height: 36px;
+			border-radius: 50%;
+			background: #10b981;
+			color: #ffffff;
+			font-weight: 700;
+			font-size: 14px;
+			display: grid;
+			place-items: center;
+			margin: 0 auto 14px;
+			box-shadow: none !important;
+			transition: none !important;
+		}
+
+		.lr-process-card:hover .lr-process-badge {
+			transform: none !important;
+			box-shadow: none !important;
+		}
+
+		/* Journey Cards Modernization */
+		.lr-journey-card {
+			position: relative;
+			padding: 24px;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			overflow: hidden;
+			height: 100%;
+		}
+
+		.lr-journey-card::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 4px;
+			background: linear-gradient(90deg, #10b981, #059669, #06b6d4);
+			opacity: 0.6;
+			transition: opacity 0.3s ease;
+		}
+
+		.lr-journey-card:hover {
+			transform: translateY(-8px) scale(1.02) !important;
+			box-shadow: 0 22px 45px -12px rgba(16, 185, 129, 0.22), 0 0 25px rgba(16, 185, 129, 0.12) !important;
+			border-color: rgba(16, 185, 129, 0.4) !important;
+		}
+
+		.lr-journey-card:hover::before {
+			opacity: 1;
+		}
+
+		.lr-card-header-row {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 16px;
+		}
+
+		.lr-card-icon {
+			width: 48px;
+			height: 48px;
+			border-radius: 14px;
+			background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+			color: #ffffff;
+			display: grid;
+			place-items: center;
+			font-size: 22px;
+			box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+			transition: transform 0.3s ease;
+		}
+
+		.lr-journey-card:hover .lr-card-icon {
+			transform: rotate(6deg) scale(1.1);
+		}
+
+		.lr-route-badge {
+			padding: 4px 10px;
+			border-radius: 20px;
+			background: rgba(16, 185, 129, 0.1);
+			color: #059669;
+			font-size: 11px;
+			font-weight: 700;
+			display: inline-flex;
+			align-items: center;
+			gap: 4px;
+		}
+
+		.lr-journey-card h3 {
+			font-size: 19px;
+			font-weight: 800;
+			color: #0f172a;
+			margin-bottom: 12px;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
+
+		.lr-arrow-icon {
+			color: #10b981;
+			font-size: 16px;
+			transition: transform 0.3s ease;
+		}
+
+		.lr-journey-card:hover .lr-arrow-icon {
+			transform: translateX(4px);
+		}
+
+		.lr-journey-details {
+			display: flex;
+			gap: 10px;
+			flex-wrap: wrap;
+			margin-bottom: 20px;
+		}
+
+		.lr-detail-chip {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			padding: 6px 12px;
+			border-radius: 8px;
+			background: #f1f5f9;
+			color: #475569;
+			font-size: 13px;
+			font-weight: 600;
+		}
+
+		.lr-card-footer-row {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding-top: 14px;
+			border-top: 1px dashed #e2e8f0;
+		}
+
+		.lr-price-info .label {
+			display: block;
+			font-size: 11px;
+			color: #64748b;
+			font-weight: 600;
+			text-transform: uppercase;
+		}
+
+		.lr-price-info .price {
+			font-size: 18px;
+			color: #059669;
+			font-weight: 900;
+		}
+
+		.lr-card-search-btn {
+			border-radius: 12px !important;
+			padding: 8px 16px !important;
+			font-weight: 700 !important;
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			transition: all 0.25s ease !important;
+		}
+
+		.lr-card-search-btn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
+		}
+
+		/* Feature Cards Modernization */
+		.lr-feature-card {
+			padding: 24px;
+			height: 100%;
+			display: flex;
+			gap: 16px;
+			align-items: flex-start;
+		}
+
+		.lr-feature-card:hover {
+			transform: translateY(-6px) scale(1.015) !important;
+			box-shadow: 0 16px 36px -8px rgba(16, 185, 129, 0.18) !important;
+			border-color: rgba(16, 185, 129, 0.35) !important;
+		}
+
+		.lr-feature-icon-wrapper {
+			width: 48px;
+			height: 48px;
+			flex-shrink: 0;
+			border-radius: 14px;
+			background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.22) 100%);
+			border: 1px solid rgba(16, 185, 129, 0.25);
+			color: #059669;
+			display: grid;
+			place-items: center;
+			font-size: 22px;
+			transition: all 0.3s ease;
+		}
+
+		.lr-feature-card:hover .lr-feature-icon-wrapper {
+			background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+			color: #fff;
+			transform: scale(1.1) rotate(-4deg);
+			box-shadow: 0 8px 18px rgba(16, 185, 129, 0.3);
+		}
+
+		.lr-feature-content h3 {
+			font-size: 18px;
+			font-weight: 700;
+			color: #0f172a;
+			margin: 0 0 6px;
+		}
+
+		.lr-feature-content p {
+			font-size: 14px;
+			color: #64748b;
+			margin: 0;
+			line-height: 1.55;
+		}
+
+		/* Process Grid Modernization */
+		.lr-process-grid {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 20px;
+			position: relative;
+		}
+
+		@media (max-width: 991px) {
+			.lr-process-grid {
+				grid-template-columns: repeat(2, 1fr);
+			}
+		}
+
+		@media (max-width: 576px) {
+			.lr-process-grid {
+				grid-template-columns: 1fr;
+			}
+		}
+
+		.lr-process-card {
+			position: relative;
+			padding: 32px 20px 24px;
+			text-align: center;
+			height: 100%;
+		}
+
+		.lr-process-card:hover {
+			transform: translateY(-8px) scale(1.02) !important;
+			box-shadow: 0 20px 40px -10px rgba(16, 185, 129, 0.2) !important;
+			border-color: rgba(16, 185, 129, 0.4) !important;
+		}
+
+		.lr-process-badge {
+			position: absolute;
+			top: -16px;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 34px;
+			height: 34px;
+			border-radius: 50%;
+			background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+			color: #fff;
+			font-size: 15px;
+			font-weight: 900;
+			display: grid;
+			place-items: center;
+			box-shadow: 0 6px 14px rgba(16, 185, 129, 0.35);
+			border: 2px solid #fff;
+		}
+
+		.lr-process-icon {
+			width: 56px;
+			height: 56px;
+			margin: 10px auto 16px;
+			border-radius: 16px;
+			background: #eef8f2;
+			color: #059669;
+			display: grid;
+			place-items: center;
+			font-size: 26px;
+			transition: all 0.3s ease;
+		}
+
+		.lr-process-card:hover .lr-process-icon {
+			background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+			color: #fff;
+			transform: scale(1.15) rotate(6deg);
+			box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+		}
+
+		.lr-process-card h3 {
+			font-size: 17px;
+			font-weight: 800;
+			color: #0f172a;
+			margin-bottom: 8px;
+		}
+
+		.lr-process-card p {
+			font-size: 13px;
+			color: #64748b;
+			margin: 0;
+			line-height: 1.5;
+		}
+
+		/* Feedback Section Modernization */
+		.lk-home-page .feedback-item {
+			min-width: 100%;
+			padding: 32px 28px;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.feedback-quote-icon {
+			position: absolute;
+			right: 20px;
+			top: 10px;
+			font-size: 64px;
+			color: rgba(16, 185, 129, 0.12);
+			pointer-events: none;
+		}
+
+		.feedback-stars {
+			display: flex;
+			gap: 4px;
+			color: #f59e0b;
+			font-size: 16px;
+			margin-bottom: 14px;
+		}
+
+		.lk-home-page .feedback-item .message {
+			font-size: 18px;
+			font-weight: 500;
+			color: #1e293b;
+			line-height: 1.65;
+			font-style: italic;
+			margin-bottom: 20px;
+		}
+
+		.feedback-author-box {
+			display: flex;
+			align-items: center;
+			gap: 14px;
+		}
+
+		.author-avatar {
+			width: 46px;
+			height: 46px;
+			border-radius: 50%;
+			background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+			color: #fff;
+			font-weight: 800;
+			font-size: 16px;
+			display: grid;
+			place-items: center;
+			box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+			border: 2px solid #fff;
+		}
+
+		.lk-home-page .feedback-item .author {
+			color: #0f172a;
+			font-weight: 800;
+			font-size: 16px;
+		}
+
+		.verified-chip {
+			display: inline-flex;
+			align-items: center;
+			gap: 4px;
+			color: #059669;
+			font-size: 12px;
+			font-weight: 700;
+		}
+
+		.lk-home-page .arrow {
+			width: 44px;
+			height: 44px;
+			border-radius: 50%;
+			background: #ffffff;
+			box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+			border: 1px solid rgba(16, 185, 129, 0.2);
+			color: #059669;
+			font-size: 18px;
+			transition: all 0.25s ease;
+		}
+
+		.lk-home-page .arrow:hover {
+			background: #059669;
+			color: #ffffff;
+			transform: translateY(-50%) scale(1.1);
+			box-shadow: 0 10px 24px rgba(16, 185, 129, 0.35);
+		}
+
+		/* Offers for You Section (Magiya.lk Style) */
+		.lr-offers-section {
+			background: #0b1310 !important;
+			color: #ffffff;
+			padding: 60px 0;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.lr-offers-section::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-image: radial-gradient(rgba(16, 185, 129, 0.22) 1.2px, transparent 1.2px);
+			background-size: 24px 24px;
+			opacity: 0.45;
+			pointer-events: none;
+		}
+
+		.lr-offers-header h2 {
+			color: #ffffff;
+			font-size: clamp(28px, 4vw, 38px);
+			font-weight: 900;
+			margin: 0 0 6px;
+			letter-spacing: -0.02em;
+		}
+
+		.lr-offers-header p {
+			color: #94a3b8;
+			font-size: 15px;
+			margin-bottom: 0;
+		}
+
+		.lr-offers-filter-row {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			margin-bottom: 28px;
+			flex-wrap: wrap;
+			position: relative;
+			z-index: 2;
+		}
+
+		.lr-offer-pill {
+			padding: 8px 20px;
+			border-radius: 999px;
+			border: 1px solid rgba(255, 255, 255, 0.15);
+			background: rgba(255, 255, 255, 0.06);
+			color: #cbd5e1;
+			font-size: 14px;
+			font-weight: 700;
+			cursor: pointer;
+			transition: all 0.25s ease;
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			user-select: none;
+		}
+
+		.lr-offer-pill:hover {
+			background: rgba(255, 255, 255, 0.15);
+			color: #ffffff;
+			border-color: rgba(255, 255, 255, 0.3);
+		}
+
+		.lr-offer-pill.active {
+			background: #ffffff;
+			color: #0f172a;
+			border-color: #ffffff;
+			box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2);
+		}
+
+		.lr-pill-tag {
+			padding: 2px 8px;
+			border-radius: 999px;
+			background: rgba(59, 130, 246, 0.3);
+			border: 1px solid rgba(59, 130, 246, 0.5);
+			color: #60a5fa;
+			font-size: 10px;
+			font-weight: 800;
+			letter-spacing: 0.05em;
+			text-transform: uppercase;
+		}
+
+		.lr-offers-carousel-wrapper {
+			position: relative;
+			padding: 0 4px;
+			z-index: 2;
+		}
+
+		.lr-offers-slider {
+			display: flex;
+			gap: 20px;
+			overflow-x: auto;
+			scroll-behavior: smooth;
+			padding: 10px 4px 20px;
+			scrollbar-width: none;
+		}
+
+		.lr-offers-slider::-webkit-scrollbar {
+			display: none;
+		}
+
+		.lr-offer-card {
+			flex: 0 0 340px;
+			max-width: 340px;
+			border-radius: 20px;
+			padding: 24px;
+			position: relative;
+			overflow: hidden;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			min-height: 240px;
+			box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+			transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+			border: 1px solid rgba(255, 255, 255, 0.15);
+			cursor: pointer;
+		}
+
+		@media (max-width: 576px) {
+			.lr-offer-card {
+				flex: 0 0 290px;
+				max-width: 290px;
+				padding: 20px;
+			}
+		}
+
+		.lr-offer-card:hover {
+			transform: translateY(-8px) scale(1.02);
+			box-shadow: 0 24px 45px rgba(0, 0, 0, 0.6);
+		}
+
+		.lr-offer-card::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background-image: radial-gradient(rgba(255, 255, 255, 0.22) 1.2px, transparent 1.2px);
+			background-size: 16px 16px;
+			opacity: 0.35;
+			pointer-events: none;
+		}
+
+		.lr-offer-card.purple {
+			background: linear-gradient(135deg, #4c1d95 0%, #6b21a8 50%, #581c87 100%);
+			border-color: rgba(168, 85, 247, 0.4);
+		}
+
+		.lr-offer-card.emerald {
+			background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #065f46 100%);
+			border-color: rgba(16, 185, 129, 0.4);
+		}
+
+		.lr-offer-card.olive {
+			background: linear-gradient(135deg, #365314 0%, #4d7c0f 50%, #3f6212 100%);
+			border-color: rgba(132, 204, 22, 0.4);
+		}
+
+		.lr-offer-card.crimson {
+			background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 50%, #881337 100%);
+			border-color: rgba(244, 63, 94, 0.4);
+		}
+
+		.lr-offer-top-bar {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			position: relative;
+			z-index: 1;
+		}
+
+		.lr-offer-type-chip {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			padding: 5px 12px;
+			border-radius: 999px;
+			background: rgba(0, 0, 0, 0.35);
+			backdrop-filter: blur(8px);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			color: #ffffff;
+			font-size: 12px;
+			font-weight: 700;
+		}
+
+		.lr-offer-exclusive-badge {
+			padding: 5px 12px;
+			border-radius: 8px;
+			font-size: 11px;
+			font-weight: 900;
+			letter-spacing: 0.05em;
+			text-transform: uppercase;
+			color: #ffffff;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+		}
+
+		.lr-offer-card.purple .lr-offer-exclusive-badge { background: #d946ef; }
+		.lr-offer-card.emerald .lr-offer-exclusive-badge { background: #10b981; }
+		.lr-offer-card.olive .lr-offer-exclusive-badge { background: #84cc16; color: #0f172a; }
+		.lr-offer-card.crimson .lr-offer-exclusive-badge { background: #f43f5e; }
+
+		.lr-offer-body {
+			margin: 18px 0;
+			position: relative;
+			z-index: 1;
+		}
+
+		.lr-offer-body h3 {
+			font-size: 20px;
+			font-weight: 900;
+			color: #ffffff;
+			line-height: 1.35;
+			margin: 0 0 8px;
+			text-transform: uppercase;
+			letter-spacing: 0.02em;
+		}
+
+		.lr-offer-body .validity {
+			font-size: 13px;
+			color: rgba(255, 255, 255, 0.85);
+			font-weight: 600;
+		}
+
+		.lr-offer-bottom-bar {
+			position: relative;
+			z-index: 1;
+		}
+
+		.lr-coupon-btn {
+			width: fit-content;
+			padding: 8px 16px;
+			border-radius: 999px;
+			background: rgba(0, 0, 0, 0.45);
+			backdrop-filter: blur(8px);
+			border: 1px solid rgba(255, 255, 255, 0.25);
+			color: #ffffff;
+			font-size: 13px;
+			font-weight: 800;
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			cursor: pointer;
+			transition: all 0.25s ease;
+		}
+
+		.lr-coupon-btn:hover {
+			background: rgba(255, 255, 255, 0.25);
+			border-color: #ffffff;
+			transform: scale(1.05);
+		}
+
+		.lr-coupon-toast {
+			position: fixed;
+			bottom: 24px;
+			right: 24px;
+			z-index: 9999;
+			padding: 12px 20px;
+			border-radius: 12px;
+			background: #0f172a;
+			color: #10b981;
+			border: 1px solid #10b981;
+			font-weight: 800;
+			font-size: 14px;
+			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			animation: lrToastIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+		}
+
+		@keyframes lrToastIn {
+			from { opacity: 0; transform: translateY(20px) scale(0.9); }
+			to { opacity: 1; transform: translateY(0) scale(1); }
+		}
+
+		.lr-offers-nav-arrows {
+			display: flex;
+			gap: 8px;
+			align-items: center;
+		}
+
+		.lr-offers-nav-btn {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			background: rgba(255, 255, 255, 0.08);
+			color: #ffffff;
+			display: grid;
+			place-items: center;
+			font-size: 16px;
+			cursor: pointer;
+			transition: all 0.25s ease;
+		}
+
+		.lr-offers-nav-btn:hover {
+			background: #10b981;
+			border-color: #10b981;
+			color: #ffffff;
+			transform: scale(1.1);
+		}
+
+		/* Video Showcase Section Styles */
+		.lr-video-section {
+			padding: 60px 0;
+			position: relative;
+		}
+
+		.about-video {
+			position: relative;
+			width: 100%;
+			max-width: 960px;
+			margin: 0 auto;
+			border-radius: 24px;
+			overflow: hidden;
+			background: #0f172a;
+			box-shadow: 0 25px 60px -15px rgba(12, 35, 26, 0.25), 0 0 0 1px rgba(16, 185, 129, 0.2);
+			border: 1px solid rgba(16, 185, 129, 0.25);
+			aspect-ratio: 16 / 9;
+		}
+
+		.about-video video {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
+		}
+	</style>
+</head>
+<body class="lk-travel lk-home-page">
+	<div class="lr-topbar">
+		<div class="container-xl d-flex align-items-center justify-content-between gap-3">
+			<a href="feedback.html" class="lr-help-link">Need help booking?</a>
+			<div class="d-flex align-items-center gap-3">
+				<span>English</span>
+				<div class="lr-accessibility" aria-label="Font size controls">
+					<button type="button" aria-label="Decrease font size">A-</button>
+					<button type="button" aria-label="Default font size">A</button>
+					<button type="button" aria-label="Increase font size">A+</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<nav class="navbar navbar-expand-lg lr-navbar sticky-top" id="mainNavbar">
+		<div class="container-xl">
+			<a class="navbar-brand lr-brand" href="index.html" aria-label="LankaRide home">
+				<span class="lr-brand-mark"><i class="bi bi-bus-front"></i></span>
+				<span>LankaRide</span>
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavMenu" aria-controls="mainNavMenu" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="mainNavMenu">
+				<ul class="navbar-nav mx-auto mb-2 mb-lg-0 lr-nav-links">
+					<li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href="booking.html">Journeys</a></li>
+					<li class="nav-item"><a class="nav-link" href="profile.html">Tickets</a></li>
+					<li class="nav-item"><a class="nav-link" href="feedback.html">Support</a></li>
+				</ul>
+				<div class="d-flex align-items-center gap-2 lr-auth-actions">
+					<a href="login.html" id="navLogin" class="btn btn-outline-success lr-login-btn">Log in</a>
+					<a href="register.html" id="navSignup" class="btn btn-success lr-signup-btn">Sign up</a>
+					<div class="notification-wrapper hidden" id="notificationWrapper">
+						<button id="notificationBell" class="btn lr-icon-btn notification-trigger" type="button" aria-label="Notifications" aria-expanded="false" aria-controls="notificationDropdown">
+							<i class="bi bi-bell"></i>
+							<span id="notificationBadge" class="notification-badge hidden">0</span>
+						</button>
+						<div id="notificationDropdown" class="notification-dropdown hidden" aria-live="polite">
+							<div class="notification-header">
+								<h3>Notifications</h3>
+								<button type="button" class="mark-all-read" id="markAllRead" disabled>Mark all as read</button>
+							</div>
+							<div class="notification-list" id="notificationList">
+								<div class="notification-empty">
+									<i class="bi bi-bell-slash"></i>
+									<strong>You're all caught up</strong>
+									<span>New booking and support updates will appear here.</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<a href="profile.html" id="navProfile" class="btn lr-icon-btn hidden" aria-label="My profile"><i class="bi bi-person"></i></a>
+					<button id="navSignout" class="btn btn-outline-secondary hidden" type="button">Sign out</button>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<header class="lr-hero">
+		<div class="container-xl">
+			<div class="row g-4">
+				<div class="col-12">
+					<p class="lr-eyebrow lr-hero-enter lr-hero-enter-1">Sri Lanka online bus booking</p>
+					<h1 class="lr-hero-enter lr-hero-enter-2">Reserve Your Bus Seat Across Sri Lanka</h1>
+					<p class="lr-hero-text lr-hero-enter lr-hero-enter-3">Search trusted bus services, compare available seats and book your journey online.</p>
+				</div>
+				<div class="col-12">
+					<form class="lr-search-widget" id="homeSearchForm">
+						<div class="lr-search-panel lr-hero-enter lr-hero-enter-4">
+							<div class="lr-search-row">
+								<div class="lr-search-grid">
+							<div class="lr-field">
+								<label for="homeFrom">From</label>
+								<div class="lr-input-wrap">
+									<i class="bi bi-geo-alt"></i>
+									<select id="homeFrom" class="form-select" required>
+										<option value="Colombo Fort">Colombo Fort</option>
+										<option value="Makumbura">Makumbura</option>
+										<option value="Kadawatha">Kadawatha</option>
+										<option value="Kandy">Kandy</option>
+										<option value="Badulla">Badulla</option>
+										<option value="Jaffna">Jaffna</option>
+										<option value="Galle">Galle</option>
+										<option value="Trincomalee">Trincomalee</option>
+									</select>
+								</div>
+							</div>
+							<button class="lr-swap-btn" type="button" id="swapLocations" aria-label="Swap departure and destination">
+								<i class="bi bi-arrow-left-right"></i>
+							</button>
+							<div class="lr-field">
+								<label for="homeTo">To</label>
+								<div class="lr-input-wrap">
+									<i class="bi bi-pin-map"></i>
+									<select id="homeTo" class="form-select" required>
+										<option value="Kandy">Kandy</option>
+										<option value="Badulla">Badulla</option>
+										<option value="Jaffna">Jaffna</option>
+										<option value="Galle">Galle</option>
+										<option value="Trincomalee">Trincomalee</option>
+										<option value="Colombo Fort">Colombo Fort</option>
+										<option value="Makumbura">Makumbura</option>
+										<option value="Kadawatha">Kadawatha</option>
+									</select>
+								</div>
+							</div>
+							<div class="lr-field">
+								<label for="homeDate">Travel date</label>
+								<div class="lr-input-wrap">
+									<i class="bi bi-calendar3"></i>
+									<input id="homeDate" class="form-control" type="date" required />
+								</div>
+							</div>
+							<div class="lr-field">
+								<label for="homeCount">Passengers</label>
+								<div class="lr-passenger-control">
+									<button type="button" id="decreasePassengers" aria-label="Decrease passengers"><i class="bi bi-dash"></i></button>
+									<input id="homeCount" type="number" min="1" max="10" value="1" aria-label="Passengers" readonly />
+									<button type="button" id="increasePassengers" aria-label="Increase passengers"><i class="bi bi-plus"></i></button>
+								</div>
+							</div>
+									<button class="btn btn-success lr-search-btn" id="searchButton" type="submit">
+										<i class="bi bi-search"></i>
+										<span>Search buses</span>
+									</button>
+								</div>
+							</div>
+							<p class="lr-form-error" id="homeSearchError" role="alert"></p>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<main>
+		<section class="lr-offers-section lr-reveal-section">
+			<div class="container-xl">
+				<div class="d-flex justify-content-between align-items-end mb-3">
+					<div class="lr-offers-header">
+						<h2>Offers for you</h2>
+						<p>Exclusive deals for your next journey across Sri Lanka</p>
+					</div>
+					<div class="lr-offers-nav-arrows d-none d-md-flex mb-3">
+						<button type="button" class="lr-offers-nav-btn" id="offerPrev" aria-label="Previous offer"><i class="bi bi-chevron-left"></i></button>
+						<button type="button" class="lr-offers-nav-btn" id="offerNext" aria-label="Next offer"><i class="bi bi-chevron-right"></i></button>
+					</div>
+				</div>
+
+				<div class="lr-offers-filter-row">
+					<button type="button" class="lr-offer-pill active" data-filter="all"><i class="bi bi-tags-fill"></i> All Offers</button>
+					<button type="button" class="lr-offer-pill" data-filter="bus"><i class="bi bi-bus-front"></i> Bus</button>
+					<button type="button" class="lr-offer-pill" data-filter="special"><i class="bi bi-stars"></i> Special Service <span class="lr-pill-tag">Coming Soon</span></button>
+				</div>
+
+				<div class="lr-offers-carousel-wrapper">
+					<div class="lr-offers-slider" id="offersSlider">
+						<article class="lr-offer-card purple" data-category="bus" data-from="Colombo Fort" data-to="Jaffna">
+							<div class="lr-offer-top-bar">
+								<span class="lr-offer-type-chip"><i class="bi bi-arrow-left-right"></i> Bus</span>
+								<span class="lr-offer-exclusive-badge">LankaRide Exclusive</span>
+							</div>
+							<div class="lr-offer-body">
+								<h3>SPECIAL OFFER! for Arugam Bay</h3>
+								<div class="validity">Valid till 31 Oct</div>
+							</div>
+							<div class="lr-offer-bottom-bar">
+								<button type="button" class="lr-coupon-btn" data-code="LANKARIDE-AG">
+									<i class="bi bi-tag-fill"></i> <span>LANKARIDE - AG</span>
+								</button>
+							</div>
+						</article>
+
+						<article class="lr-offer-card emerald" data-category="bus" data-from="Colombo Fort" data-to="Trincomalee">
+							<div class="lr-offer-top-bar">
+								<span class="lr-offer-type-chip"><i class="bi bi-arrow-left-right"></i> Bus</span>
+								<span class="lr-offer-exclusive-badge">LankaRide Exclusive</span>
+							</div>
+							<div class="lr-offer-body">
+								<h3>SPECIAL OFFER! for Colombo - Trincomalee</h3>
+								<div class="validity">Valid till 30 Dec</div>
+							</div>
+							<div class="lr-offer-bottom-bar">
+								<button type="button" class="lr-coupon-btn" data-code="LANKARIDE-TG">
+									<i class="bi bi-tag-fill"></i> <span>LANKARIDE - TG</span>
+								</button>
+							</div>
+						</article>
+
+						<article class="lr-offer-card olive" data-category="bus" data-from="Makumbura" data-to="Badulla">
+							<div class="lr-offer-top-bar">
+								<span class="lr-offer-type-chip"><i class="bi bi-arrow-left-right"></i> Bus</span>
+								<span class="lr-offer-exclusive-badge">LankaRide Exclusive</span>
+							</div>
+							<div class="lr-offer-body">
+								<h3>SPECIAL OFFER! for Makumbura - Madulsima</h3>
+								<div class="validity">Valid till 30 Oct</div>
+							</div>
+							<div class="lr-offer-bottom-bar">
+								<button type="button" class="lr-coupon-btn" data-code="LANKARIDE-ML">
+									<i class="bi bi-tag-fill"></i> <span>LANKARIDE - ML</span>
+								</button>
+							</div>
+						</article>
+
+						<article class="lr-offer-card crimson" data-category="bus" data-from="Colombo Fort" data-to="Jaffna">
+							<div class="lr-offer-top-bar">
+								<span class="lr-offer-type-chip"><i class="bi bi-arrow-left-right"></i> Bus</span>
+								<span class="lr-offer-exclusive-badge">LankaRide Exclusive</span>
+							</div>
+							<div class="lr-offer-body">
+								<h3>SPECIAL OFFER! for Nallur Temple Festival</h3>
+								<div class="validity">Valid till 17 Sep</div>
+							</div>
+							<div class="lr-offer-bottom-bar">
+								<button type="button" class="lr-coupon-btn" data-code="LANKARIDE-CM">
+									<i class="bi bi-tag-fill"></i> <span>LANKARIDE - CM</span>
+								</button>
+							</div>
+						</article>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="lr-section lr-journeys-section lr-reveal-section">
+			<div class="container-xl">
+				<div class="lr-section-heading text-center">
+					<h2>Popular Intercity Routes</h2>
+					<p class="lr-subtitle">High-frequency highway and express routes across Sri Lanka</p>
+				</div>
+				<div class="row g-4">
+					<div class="col-md-6 col-lg-4">
+						<article class="lr-journey-card lr-glass-card">
+							<div class="lr-card-header-row">
+								<div class="lr-card-icon"><i class="bi bi-bus-front-fill"></i></div>
+								<span class="lr-route-badge"><i class="bi bi-lightning-charge-fill"></i> Express</span>
+							</div>
+							<h3>Colombo Fort <i class="bi bi-arrow-right lr-arrow-icon"></i> Jaffna</h3>
+							<div class="lr-journey-details">
+								<span class="lr-detail-chip"><i class="bi bi-clock"></i> 7h 30m</span>
+								<span class="lr-detail-chip"><i class="bi bi-geo-alt"></i> Northern Highway</span>
+							</div>
+							<div class="lr-card-footer-row">
+								<div class="lr-price-info">
+									<span class="label">Starting from</span>
+									<strong class="price">LKR 2,450</strong>
+								</div>
+								<button type="button" class="btn btn-success lr-card-search lr-card-search-btn" data-from="Colombo Fort" data-to="Jaffna">
+									<span>Book Now</span> <i class="bi bi-arrow-right"></i>
+								</button>
+							</div>
+						</article>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<article class="lr-journey-card lr-glass-card">
+							<div class="lr-card-header-row">
+								<div class="lr-card-icon"><i class="bi bi-bus-front-fill"></i></div>
+								<span class="lr-route-badge"><i class="bi bi-lightning-charge-fill"></i> Express</span>
+							</div>
+							<h3>Makumbura <i class="bi bi-arrow-right lr-arrow-icon"></i> Badulla</h3>
+							<div class="lr-journey-details">
+								<span class="lr-detail-chip"><i class="bi bi-clock"></i> 5h 45m</span>
+								<span class="lr-detail-chip"><i class="bi bi-geo-alt"></i> Southern Highway</span>
+							</div>
+							<div class="lr-card-footer-row">
+								<div class="lr-price-info">
+									<span class="label">Starting from</span>
+									<strong class="price">LKR 1,850</strong>
+								</div>
+								<button type="button" class="btn btn-success lr-card-search lr-card-search-btn" data-from="Makumbura" data-to="Badulla">
+									<span>Book Now</span> <i class="bi bi-arrow-right"></i>
+								</button>
+							</div>
+						</article>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<article class="lr-journey-card lr-glass-card">
+							<div class="lr-card-header-row">
+								<div class="lr-card-icon"><i class="bi bi-bus-front-fill"></i></div>
+								<span class="lr-route-badge"><i class="bi bi-lightning-charge-fill"></i> Express</span>
+							</div>
+							<h3>Colombo Fort <i class="bi bi-arrow-right lr-arrow-icon"></i> Trincomalee</h3>
+							<div class="lr-journey-details">
+								<span class="lr-detail-chip"><i class="bi bi-clock"></i> 6h 15m</span>
+								<span class="lr-detail-chip"><i class="bi bi-geo-alt"></i> Eastern Route</span>
+							</div>
+							<div class="lr-card-footer-row">
+								<div class="lr-price-info">
+									<span class="label">Starting from</span>
+									<strong class="price">LKR 2,100</strong>
+								</div>
+								<button type="button" class="btn btn-success lr-card-search lr-card-search-btn" data-from="Colombo Fort" data-to="Trincomalee">
+									<span>Book Now</span> <i class="bi bi-arrow-right"></i>
+								</button>
+							</div>
+						</article>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Product Walkthrough Video Showcase Section -->
+		<section class="lr-section lr-video-section lr-reveal-section">
+			<div class="container-xl">
+
+				<div class="about-video" id="aboutVideo">
+					<video id="aboutVideoEl" autoplay muted loop playsinline preload="auto">
+						<source src="assets/ncg.mp4" type="video/mp4">
+						Your browser does not support HTML5 video.
+					</video>
+				</div>
+			</div>
+		</section>
+
+		<section class="lr-section lr-soft-section lr-reveal-section">
+			<div class="container-xl">
+				<div class="lr-section-heading text-center">
+					<h2>Built for Practical Bus Travel</h2>
+					<p class="lr-subtitle">Seamless online experience tailored for Sri Lankan passengers</p>
+				</div>
+				<div class="row g-4">
+					<div class="col-md-6 col-lg-4">
+						<div class="lr-feature-card lr-glass-card">
+							<div class="lr-feature-icon-wrapper"><i class="bi bi-layout-three-columns"></i></div>
+							<div class="lr-feature-content">
+								<h3>Live Seat Availability</h3>
+								<p>Interactive seat layout map to select your preferred seat before proceeding to checkout.</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="lr-feature-card lr-glass-card">
+							<div class="lr-feature-icon-wrapper"><i class="bi bi-credit-card-2-front-fill"></i></div>
+							<div class="lr-feature-content">
+								<h3>Secure Online Payment</h3>
+								<p>Pay instantly with debit/credit cards or saved cards and track complete transaction receipts.</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="lr-feature-card lr-glass-card">
+							<div class="lr-feature-icon-wrapper"><i class="bi bi-qr-code-scan"></i></div>
+							<div class="lr-feature-content">
+								<h3>Instant Digital Ticket</h3>
+								<p>Get immediate mobile-friendly tickets and PDF downloads with QR verification upon confirmation.</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="lr-feature-card lr-glass-card">
+							<div class="lr-feature-icon-wrapper"><i class="bi bi-arrow-counterclockwise"></i></div>
+							<div class="lr-feature-content">
+								<h3>Cancellation & Refunds</h3>
+								<p>Hassle-free refund requests directly from your passenger profile panel with status tracking.</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="lr-feature-card lr-glass-card">
+							<div class="lr-feature-icon-wrapper"><i class="bi bi-bell-fill"></i></div>
+							<div class="lr-feature-content">
+								<h3>Journey Notifications</h3>
+								<p>Receive real-time alerts for booking changes, schedule updates, and support responses.</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-4">
+						<div class="lr-feature-card lr-glass-card">
+							<div class="lr-feature-icon-wrapper"><i class="bi bi-sliders"></i></div>
+							<div class="lr-feature-content">
+								<h3>Staff-Managed Schedules</h3>
+								<p>Real-time bus schedules updated directly by official transport operations staff.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="lr-section lr-reveal-section">
+			<div class="container-xl">
+				<div class="lr-section-heading text-center">
+					<h2>Four Simple Steps</h2>
+					<p class="lr-subtitle">Book your bus ticket online in less than two minutes</p>
+				</div>
+				<div class="lr-process-grid">
+					<div class="lr-process-card lr-glass-card">
+						<div class="lr-process-badge">1</div>
+						<div class="lr-process-icon"><i class="bi bi-search"></i></div>
+						<h3>Search Your Route</h3>
+						<p>Select departure stand, destination, travel date, and passenger count.</p>
+					</div>
+					<div class="lr-process-card lr-glass-card">
+						<div class="lr-process-badge">2</div>
+						<div class="lr-process-icon"><i class="bi bi-bus-front"></i></div>
+						<h3>Choose Bus & Seat</h3>
+						<p>View bus types, timings, fares, and pick your preferred available seats.</p>
+					</div>
+					<div class="lr-process-card lr-glass-card">
+						<div class="lr-process-badge">3</div>
+						<div class="lr-process-icon"><i class="bi bi-lock-fill"></i></div>
+						<h3>Pay Securely</h3>
+						<p>Complete payment using your saved card or secure online checkout gateway.</p>
+					</div>
+					<div class="lr-process-card lr-glass-card">
+						<div class="lr-process-badge">4</div>
+						<div class="lr-process-icon"><i class="bi bi-ticket-perforated-fill"></i></div>
+						<h3>Digital Ticket</h3>
+						<p>Instantly download your e-ticket with QR code ready for boarding.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="lr-section lr-feedback-section lr-reveal-section">
+			<div class="container-xl">
+				<div class="lr-section-heading text-center">
+					<h2>Recent Travel Comments</h2>
+					<p class="lr-subtitle">Real experiences shared by LankaRide travelers</p>
+				</div>
+				<div class="feedback-carousel" id="feedbackCarousel">
+					<button class="arrow left" id="prevBtn" type="button" style="display:none;" aria-label="Previous feedback"><i class="bi bi-chevron-left"></i></button>
+					<div class="feedback-slider" id="feedbackSlider"></div>
+					<button class="arrow right" id="nextBtn" type="button" style="display:none;" aria-label="Next feedback"><i class="bi bi-chevron-right"></i></button>
+				</div>
+				<div class="feedback-dots" id="feedbackDots"></div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="lr-footer">
+		<div class="container-xl">
+			<div class="row g-4">
+				<div class="col-md-6 col-lg-3">
+					<h2>LankaRide</h2>
+					<p>Online bus ticket booking for intercity journeys across Sri Lanka.</p>
+					<div class="lr-payment-methods lr-footer-payments">
+						<img src="assets/visa.svg" alt="Visa" class="lr-pay-logo">
+						<img src="assets/mastercard.svg" alt="Mastercard" class="lr-pay-logo">
+						<img src="assets/lankaqr.svg" alt="LankaQR" class="lr-pay-logo">
+					</div>
+				</div>
+				<div class="col-6 col-lg-2">
+					<h3>About</h3>
+					<a href="index.html">About LankaRide</a>
+					<a href="booking.html">Our network</a>
+					<a href="feedback.html">Careers</a>
+				</div>
+				<div class="col-6 col-lg-3">
+					<h3>Popular routes</h3>
+					<a href="booking.html">Colombo to Kandy</a>
+					<a href="booking.html">Colombo to Jaffna</a>
+					<a href="booking.html">Makumbura to Badulla</a>
+					<a href="booking.html">Colombo to Galle</a>
+				</div>
+				<div class="col-6 col-lg-2">
+					<h3>Support</h3>
+					<a href="feedback.html">Help centre</a>
+					<a href="profile.html">Manage booking</a>
+					<a href="profile.html">Refund policy</a>
+					<a href="feedback.html">Contact support</a>
+				</div>
+				<div class="col-6 col-lg-2">
+					<h3>Contact</h3>
+					<span>+94 11 234 5678</span>
+					<span>support@lankaride.lk</span>
+					<span>Colombo, Sri Lanka</span>
+				</div>
+			</div>
+			<div class="lr-footer-bottom">
+				<span id="footerYear"></span>
+				<div>
+					<a href="index.html">Privacy Policy</a>
+					<a href="index.html">Terms and Conditions</a>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		const fromSelect = document.getElementById('homeFrom');
+		const toSelect = document.getElementById('homeTo');
+		const travelDate = document.getElementById('homeDate');
+		const passengerInput = document.getElementById('homeCount');
+		const searchError = document.getElementById('homeSearchError');
+		const searchButton = document.getElementById('searchButton');
+
+		function getLocalDateValue(date) {
+			const year = date.getFullYear();
+			const month = String(date.getMonth() + 1).padStart(2, '0');
+			const day = String(date.getDate()).padStart(2, '0');
+			return `${year}-${month}-${day}`;
+		}
+
+		function setTodayAsMinimumDate() {
+			const today = getLocalDateValue(new Date());
+			travelDate.min = today;
+			if (!travelDate.value || travelDate.value < today) travelDate.value = today;
+		}
+
+		function setRoute(from, to) {
+			fromSelect.value = from;
+			toSelect.value = to;
+			searchError.textContent = '';
+		}
+
+		function validateSearch() {
+			if (fromSelect.value === toSelect.value) {
+				searchError.textContent = 'Departure and destination cannot be the same.';
+				return false;
+			}
+			if (travelDate.value < travelDate.min) {
+				searchError.textContent = 'Please select today or a future travel date.';
+				return false;
+			}
+			searchError.textContent = '';
+			return true;
+		}
+
+		function updatePassengers(change) {
+			const nextValue = Math.min(10, Math.max(1, Number(passengerInput.value) + change));
+			passengerInput.value = nextValue;
+		}
+
+		document.getElementById('swapLocations').addEventListener('click', () => {
+			const swapButton = document.getElementById('swapLocations');
+			const from = fromSelect.value;
+			fromSelect.value = toSelect.value;
+			toSelect.value = from;
+			swapButton.classList.remove('is-swapping');
+			void swapButton.offsetWidth;
+			swapButton.classList.add('is-swapping');
+			window.setTimeout(() => swapButton.classList.remove('is-swapping'), 300);
+			validateSearch();
+		});
+
+		document.getElementById('decreasePassengers').addEventListener('click', () => updatePassengers(-1));
+		document.getElementById('increasePassengers').addEventListener('click', () => updatePassengers(1));
+		fromSelect.addEventListener('change', validateSearch);
+		toSelect.addEventListener('change', validateSearch);
+		travelDate.addEventListener('change', validateSearch);
+
+		document.querySelectorAll('.lr-route-chips button, .lr-card-search').forEach(button => {
+			button.addEventListener('click', () => {
+				setRoute(button.dataset.from, button.dataset.to);
+				document.querySelector('.lr-search-widget').scrollIntoView({ behavior: 'smooth', block: 'center' });
+			});
+		});
+
+		document.getElementById('homeSearchForm').addEventListener('submit', (event) => {
+			event.preventDefault();
+			if (!validateSearch()) return;
+
+			searchButton.classList.add('is-loading');
+			searchButton.disabled = true;
+			const from = fromSelect.value;
+			const to = toSelect.value;
+			const date = travelDate.value;
+			const count = Number(passengerInput.value) || 1;
+			localStorage.setItem('pendingBooking', JSON.stringify({ from, to, date, count }));
+
+			setTimeout(() => {
+				const qs = new URLSearchParams({ from, to, date }).toString();
+				window.location.href = `availability.html?${qs}`;
+			}, 220);
+		});
+
+		function syncAuthUI() {
+			const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+			const loggedIn = !!user;
+			const isPassenger = loggedIn && user.role && user.role.toLowerCase() === 'passenger';
+			document.getElementById('navLogin').classList.toggle('hidden', loggedIn);
+			document.getElementById('navSignup').classList.toggle('hidden', loggedIn);
+			document.getElementById('navProfile').classList.toggle('hidden', !loggedIn);
+			document.getElementById('navSignout').classList.toggle('hidden', !loggedIn);
+			document.getElementById('notificationWrapper').classList.toggle('hidden', !isPassenger);
+		}
+
+		document.getElementById('navSignout').addEventListener('click', () => {
+			localStorage.removeItem('currentUser');
+			syncAuthUI();
+		});
+
+		let notificationDropdownVisible = false;
+
+		function getTimeAgo(dateString) {
+			const now = new Date();
+			const past = new Date(dateString);
+			const seconds = Math.floor((now - past) / 1000);
+			if (seconds < 60) return 'Just now';
+			const minutes = Math.floor(seconds / 60);
+			if (minutes < 60) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+			const hours = Math.floor(minutes / 60);
+			if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+			const days = Math.floor(hours / 24);
+			return `${days} day${days > 1 ? 's' : ''} ago`;
+		}
+
+		function loadNotifications() {
+			const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+			if (!user || !user.nic) return;
+			fetch(`/api/notifications/user/${user.nic}`)
+				.then(res => res.json())
+				.then(notifications => {
+					displayNotifications(notifications);
+					updateNotificationBadge();
+				})
+				.catch(err => console.error('Error loading notifications:', err));
+		}
+
+		function getNotificationEmptyState() {
+			return `
+				<div class="notification-empty">
+					<i class="bi bi-bell-slash"></i>
+					<strong>You're all caught up</strong>
+					<span>New booking and support updates will appear here.</span>
+				</div>
+			`;
+		}
+
+		function getNotificationTitle(notification) {
+			const message = (notification.message || '').toLowerCase();
+			if (message.includes('booking') || message.includes('reservation')) return 'Booking update';
+			if (message.includes('payment')) return 'Payment update';
+			if (message.includes('feedback') || message.includes('support')) return 'Support update';
+			return 'LankaRide update';
+		}
+
+		function displayNotifications(notifications) {
+			const list = document.getElementById('notificationList');
+			const markAllButton = document.getElementById('markAllRead');
+			const items = Array.isArray(notifications) ? notifications : [];
+			markAllButton.disabled = !items.some(notification => !notification.isRead);
+			if (items.length === 0) {
+				list.innerHTML = getNotificationEmptyState();
+				return;
+			}
+			list.innerHTML = items.map(notif => `
+				<button class="notification-item ${!notif.isRead ? 'unread' : ''}" data-id="${notif.id}" type="button">
+					<span class="notification-type-icon"><i class="bi bi-bell"></i></span>
+					<span class="notification-content">
+						<span class="notification-title">${getNotificationTitle(notif)}</span>
+						<span class="notification-message">${notif.message || 'You have a new LankaRide update.'}</span>
+						<span class="notification-time">${getTimeAgo(notif.createdAt)}</span>
+					</span>
+					${!notif.isRead ? '<span class="notification-dot" aria-hidden="true"></span>' : '<span></span>'}
+				</button>
+			`).join('');
+			list.querySelectorAll('.notification-item').forEach(item => {
+				item.addEventListener('click', () => markNotificationAsRead(item.dataset.id));
+			});
+		}
+
+		function updateNotificationBadge() {
+			const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+			if (!user || !user.nic) return;
+			fetch(`/api/notifications/user/${user.nic}/count`)
+				.then(res => res.json())
+				.then(data => {
+					const badge = document.getElementById('notificationBadge');
+					if (data.unreadCount > 0) {
+						badge.textContent = data.unreadCount > 99 ? '99+' : data.unreadCount;
+						badge.classList.remove('hidden');
+					} else {
+						badge.classList.add('hidden');
+					}
+				})
+				.catch(err => console.error('Error updating badge:', err));
+		}
+
+		function markNotificationAsRead(notificationId) {
+			fetch(`/api/notifications/${notificationId}/read`, { method: 'PUT' })
+				.then(loadNotifications)
+				.catch(err => console.error('Error marking as read:', err));
+		}
+
+		function setNotificationDropdown(open) {
+			const dropdown = document.getElementById('notificationDropdown');
+			const bell = document.getElementById('notificationBell');
+			notificationDropdownVisible = open;
+			dropdown.classList.toggle('is-open', open);
+			dropdown.classList.toggle('hidden', !open);
+			bell.setAttribute('aria-expanded', String(open));
+			if (open) loadNotifications();
+		}
+
+		document.getElementById('markAllRead').addEventListener('click', () => {
+			const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+			if (!user || !user.nic) return;
+			fetch(`/api/notifications/user/${user.nic}/read-all`, { method: 'PUT' })
+				.then(loadNotifications)
+				.catch(err => console.error('Error marking all as read:', err));
+		});
+
+		document.getElementById('notificationBell').addEventListener('click', (event) => {
+			event.stopPropagation();
+			setNotificationDropdown(!notificationDropdownVisible);
+		});
+
+		document.getElementById('notificationDropdown').addEventListener('click', (event) => {
+			event.stopPropagation();
+		});
+
+		document.addEventListener('click', (event) => {
+			const wrapper = document.getElementById('notificationWrapper');
+			if (!wrapper.contains(event.target)) setNotificationDropdown(false);
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape') setNotificationDropdown(false);
+		});
+
+		let currentFeedbackIndex = 0;
+		let feedbacks = [];
+
+		function loadFeedbacks() {
+			fetch('/api/feedback/type/feedback', { credentials: 'same-origin' })
+				.then(res => res.json())
+				.then(data => {
+					feedbacks = data.filter(f => f.type === 'feedback').slice(0, 6);
+					if (feedbacks.length === 0) {
+						document.getElementById('feedbackSlider').innerHTML = '<div class="no-feedbacks">No passenger feedback available yet.</div>';
+						return;
+					}
+					renderFeedbacks();
+					updateCarousel();
+				})
+				.catch(err => {
+					console.error('Error loading feedbacks:', err);
+					document.getElementById('feedbackSlider').innerHTML = '<div class="no-feedbacks">Unable to load feedback right now.</div>';
+				});
+		}
+
+		function getInitials(name) {
+			if (!name) return 'P';
+			const parts = name.trim().split(' ');
+			if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+			return name.substring(0, 2).toUpperCase();
+		}
+
+		function renderFeedbacks() {
+			document.getElementById('feedbackSlider').innerHTML = feedbacks.map(fb => `
+				<div class="feedback-item lr-glass-card">
+					<div class="feedback-quote-icon"><i class="bi bi-quote"></i></div>
+					<div class="feedback-stars">
+						<i class="bi bi-star-fill"></i>
+						<i class="bi bi-star-fill"></i>
+						<i class="bi bi-star-fill"></i>
+						<i class="bi bi-star-fill"></i>
+						<i class="bi bi-star-fill"></i>
+					</div>
+					<div class="message">"${fb.description}"</div>
+					<div class="feedback-author-box">
+						<div class="author-avatar">${getInitials(fb.name)}</div>
+						<div>
+							<div class="author">${fb.name}</div>
+							<span class="verified-chip"><i class="bi bi-patch-check-fill"></i> Verified Passenger</span>
+						</div>
+					</div>
+				</div>
+			`).join('');
+			document.getElementById('feedbackDots').innerHTML = feedbacks.map((_, index) =>
+				`<button type="button" class="dot ${index === 0 ? 'active' : ''}" data-index="${index}" aria-label="Show feedback ${index + 1}"></button>`
+			).join('');
+			document.querySelectorAll('.dot').forEach(dot => {
+				dot.addEventListener('click', () => goToFeedback(Number(dot.dataset.index)));
+			});
+			document.getElementById('prevBtn').style.display = feedbacks.length > 1 ? 'flex' : 'none';
+			document.getElementById('nextBtn').style.display = feedbacks.length > 1 ? 'flex' : 'none';
+		}
+
+		function updateCarousel() {
+			document.getElementById('feedbackSlider').style.transform = `translateX(-${currentFeedbackIndex * 100}%)`;
+			document.querySelectorAll('.dot').forEach((dot, index) => dot.classList.toggle('active', index === currentFeedbackIndex));
+		}
+
+		function nextFeedback() {
+			currentFeedbackIndex = (currentFeedbackIndex + 1) % feedbacks.length;
+			updateCarousel();
+		}
+
+		function prevFeedback() {
+			currentFeedbackIndex = (currentFeedbackIndex - 1 + feedbacks.length) % feedbacks.length;
+			updateCarousel();
+		}
+
+		function goToFeedback(index) {
+			currentFeedbackIndex = index;
+			updateCarousel();
+		}
+
+		document.getElementById('nextBtn').addEventListener('click', nextFeedback);
+		document.getElementById('prevBtn').addEventListener('click', prevFeedback);
+
+		const revealObserver = new IntersectionObserver(entries => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('is-visible');
+					revealObserver.unobserve(entry.target);
+				}
+			});
+		}, { threshold: 0.12 });
+
+		document.querySelectorAll('.lr-reveal-section').forEach(section => revealObserver.observe(section));
+
+		window.addEventListener('scroll', () => {
+			document.getElementById('mainNavbar').classList.toggle('is-scrolled', window.scrollY > 8);
+		});
+
+		document.getElementById('footerYear').textContent = `© ${new Date().getFullYear()} LankaRide`;
+		setTodayAsMinimumDate();
+		syncAuthUI();
+		const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+		if (currentUser && currentUser.role && currentUser.role.toLowerCase() === 'passenger') {
+			updateNotificationBadge();
+			setInterval(updateNotificationBadge, 30000);
+		}
+		loadFeedbacks();
+
+		// Offers section interactions
+		const offersSlider = document.getElementById('offersSlider');
+		document.getElementById('offerNext')?.addEventListener('click', () => {
+			offersSlider.scrollBy({ left: 320, behavior: 'smooth' });
+		});
+		document.getElementById('offerPrev')?.addEventListener('click', () => {
+			offersSlider.scrollBy({ left: -320, behavior: 'smooth' });
+		});
+
+		document.querySelectorAll('.lr-offer-pill').forEach(pill => {
+			pill.addEventListener('click', () => {
+				document.querySelectorAll('.lr-offer-pill').forEach(p => p.classList.remove('active'));
+				pill.classList.add('active');
+				const filter = pill.dataset.filter;
+				document.querySelectorAll('.lr-offer-card').forEach(card => {
+					if (filter === 'all' || card.dataset.category === filter) {
+						card.style.display = 'flex';
+					} else {
+						card.style.display = 'none';
+					}
+				});
+			});
+		});
+
+		document.querySelectorAll('.lr-coupon-btn').forEach(btn => {
+			btn.addEventListener('click', (e) => {
+				e.stopPropagation();
+				const code = btn.dataset.code;
+				navigator.clipboard.writeText(code).then(() => {
+					showToast(`Promo code ${code} copied to clipboard!`);
+				}).catch(() => {
+					showToast(`Promo code: ${code}`);
+				});
+			});
+		});
+
+		function showToast(message) {
+			const existing = document.querySelector('.lr-coupon-toast');
+			if (existing) existing.remove();
+			const toast = document.createElement('div');
+			toast.className = 'lr-coupon-toast';
+			toast.innerHTML = `<i class="bi bi-check-circle-fill"></i> <span>${message}</span>`;
+			document.body.appendChild(toast);
+			setTimeout(() => toast.remove(), 3000);
+		}
+
+		document.querySelectorAll('.lr-offer-card').forEach(card => {
+			card.addEventListener('click', (e) => {
+				if (e.target.closest('.lr-coupon-btn')) return;
+				const from = card.dataset.from;
+				const to = card.dataset.to;
+				if (from && to) {
+					setRoute(from, to);
+					document.querySelector('.lr-search-widget').scrollIntoView({ behavior: 'smooth', block: 'center' });
+				}
+			});
+		});
+
+		// Video autoplay initialization
+		const videoEl = document.getElementById('aboutVideoEl');
+		if (videoEl) {
+			videoEl.muted = true;
+			videoEl.play().catch(err => {
+				console.log('Autoplay deferred:', err);
+			});
+		}
+	</script>
+</body>
+</html>
